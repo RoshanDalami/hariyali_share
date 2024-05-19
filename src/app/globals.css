@@ -2,32 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@layer base {
+    .inputStyle {
+      @apply border border-gray-300 rounded-lg  focus:outline-none focus:ring focus:border-blue-300 hover:ring-2 hover:ring-blue-300 transition duration-300 ease-in-out p-3;
+    }
+    .inputStyleError {
+      @apply border border-gray-300 rounded-lg  focus:outline-none focus:ring focus:border-red-300 hover:ring-2 hover:ring-red-300 transition duration-300 ease-in-out p-4;
+    }
+    .errorMessages {
+      @apply text-red-600 text-[16px] pt-1;
+    }
+    .labelText{
+        @apply text-xl my-1
+    }
   }
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
