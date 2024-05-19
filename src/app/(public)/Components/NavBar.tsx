@@ -5,8 +5,9 @@ export default function NavBar() {
   return (
     <div className=' sticky top-0 z-40 flex items-center py-3 justify-between bg-green-600 px-10'>
       <div>
-        <Link href={'/'}>
+        <Link href={'/'} className='flex items-center gap-3 '>
         <Image alt='logo' src={'/logo_circle.jpeg'} width={75} height={75} className='rounded-full'/>
+        <h1 className='text-white font-bold text-2xl'>Hariyali Share</h1>
         </Link>
       </div>
       <div className='flex gap-3 items-center'>
