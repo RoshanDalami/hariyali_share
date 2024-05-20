@@ -1,30 +1,26 @@
-import type { Metadata } from "next";
+'use client'
+// import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import Sidebar from "./Component/Sidebar";
-import Navbar from "./Component/Navbar";
-
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Hariyali Share Admin",
-  description: "",
-};
+// export const metadata: Metadata = {
+//   title: "Hariyali Share",
+//   description: "",
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const queryClient = new QueryClient();
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="flex">
-          <Navbar />
-          <Sidebar />
-          <div className="ml-[20%] mt-[88px]"> {children}</div>
-        </div>
-      </body>
+      <QueryClientProvider client={queryClient}>
+        <body className={inter.className}>{children}</body>
+      </QueryClientProvider>
     </html>
   );
 }

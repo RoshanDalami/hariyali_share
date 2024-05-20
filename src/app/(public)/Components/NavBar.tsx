@@ -16,7 +16,7 @@ export default function NavBar() {
             Application
         </button>
         </Link>
-        <Link href={'/admin/login'} className=' cursor-pointer' >
+        <Link href={'/login'} className=' cursor-pointer' >
         <button className='bg-red-600 text-white rounded-md shadow-md px-3 py-2'>
             Login
         </button>
