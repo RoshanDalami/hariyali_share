@@ -11,7 +11,11 @@ import {
 } from "@/services/apiServices/office/officeServices";
 import { useQuery } from "@tanstack/react-query";
 import { CreateRequest } from "@/services/apiServices/request/requestServices";
+import BikramSambat, { ADToBS, BSToAD } from "bikram-sambat-js";
+const aa = new BikramSambat(new Date()).toBS();
+import { useRouter } from "next/navigation";
 export default function CreateApplicaton() {
+  const router = useRouter()
   const {
     register,
     formState: { errors, isSubmitting },
@@ -159,9 +163,12 @@ export default function CreateApplicaton() {
     formData.set("totalShareAmount", data.totalShareAmount);
     formData.set("permanentAddress", JSON.stringify(data.permanentAddress));
     formData.set("temporaryAddress", JSON.stringify(data.temporaryAddress));
+    formData.set('date',aa)
 
     const response = await CreateRequest(formData);
-    console.log(response, "response");
+    if(response?.status === 200){
+      router.push('/')
+    }
   };
 
   return (

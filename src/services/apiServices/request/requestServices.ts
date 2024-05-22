@@ -18,3 +18,11 @@ export async function GetRequest(){
     )
     return response
 }
+
+export async function UpdateOpenStatus(id:string){
+    let response = await mainApi(
+        apiUrls?.request?.updateOpenStatus?.method,
+        apiUrls?.request?.updateOpenStatus?.url+`/${id?id:''}`,
+    )
+    return response
+}

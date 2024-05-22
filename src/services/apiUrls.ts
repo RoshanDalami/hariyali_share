@@ -21,6 +21,10 @@ export const apiUrls = {
         getRequest:{
             method:"GET",
             url:"/request/getRequest"
+        },
+        updateOpenStatus :{
+            method:"GET",
+            url:"/request/requestOpen"
         }
         
     }
