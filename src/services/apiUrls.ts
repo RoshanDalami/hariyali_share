@@ -12,5 +12,16 @@ export const apiUrls = {
             method:"GET",
             url:"/office/getPalika"
         }
+    },
+    request:{
+        createRequest:{
+            method:"POST",
+            url:"/request/createRequest"
+        },
+        getRequest:{
+            method:"GET",
+            url:"/request/getRequest"
+        }
+        
     }
 }
