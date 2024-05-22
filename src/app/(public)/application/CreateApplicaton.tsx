@@ -4,8 +4,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 import FormBorder from "../Components/FormBorder";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { applicationResolver } from "@/Zod/resolver";
 import {
   GetDistrict,
   GetPalika,
