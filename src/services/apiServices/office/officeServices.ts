@@ -24,3 +24,36 @@ export async function GetPalika(id:number){
     )
     return response
 }
+
+export async function CreateFiscal(data:any){
+    let response = await mainApi(
+        apiUrls?.office?.createFiscalYear.method,
+        apiUrls?.office?.createFiscalYear.url,
+        data
+    )
+    return response 
+}
+
+export async function GetFiscal(){
+    let response = await mainApi(
+        apiUrls.office.getFiscal.method,
+        apiUrls.office.getFiscal.url 
+    )
+    return response
+}
+
+export async function GetFiscalById(id:string){
+    let response = await mainApi(
+        apiUrls.office.getFiscalById.method,
+        apiUrls.office.getFiscalById.url+`/${id?id:''}`,
+    )
+    return response
+}
+
+export async function UpdateStatus(id:string){
+    let response = await mainApi(
+        apiUrls.office.updateStatus.method,
+        apiUrls.office.updateStatus.url+`/${id?id:''}`,
+    )
+    return response
+}

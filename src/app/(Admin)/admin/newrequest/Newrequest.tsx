@@ -5,8 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { GetRequest } from "@/services/apiServices/request/requestServices";
 import { ShareRequest } from "@/types/types";
 import Image from "next/image";
+import ErrorImage from '../.../../../../../../public/error.svg'
 import note from '../../../../../public/note.svg'
 import CircularProgress from "@mui/material/CircularProgress";
+
 const NewRequest = () => {
   const getRequestData = async () => {
     const { data } = await GetRequest();
@@ -36,6 +38,17 @@ const NewRequest = () => {
         <CircularProgress size={100} />
       </div>
     );
+
+    if(isError){
+      return (
+        <div >
+          <Image src={ErrorImage} alt="" width={500} height={500} />
+          <h1></h1>
+
+
+        </div>
+      )
+    }
   return (
     <div className="">
       {shareRequestList?.map((item: ShareRequest, index: number) => {
