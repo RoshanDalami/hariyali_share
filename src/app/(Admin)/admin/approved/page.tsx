@@ -1,7 +1,10 @@
 import React from "react";
+import ApprovedRequest from "./ApprovedRequest";
 
-const page = () => {
-  return <div>Your request hasbeen approved</div>;
+const Approved = () => {
+  return <div>
+    <ApprovedRequest/>
+  </div>;
 };
 
-export default page;
+export default Approved;

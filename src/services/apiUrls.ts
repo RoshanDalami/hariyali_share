@@ -1,4 +1,18 @@
 export const apiUrls = {
+    user:{
+        register:{
+            method:"POST",
+            url:"/user/register",
+        },
+        login:{
+            method:"POST",
+            url:"/user/login"
+        },
+        me:{
+            method:"GET",
+            url:"/user/me"
+        }
+    },
     office:{
         getState:{
             method:"GET",
@@ -25,6 +39,26 @@ export const apiUrls = {
         updateOpenStatus :{
             method:"GET",
             url:"/request/requestOpen"
+        },
+        getRequestById:{
+            method:"GET",
+            url:"/request/getRequestById"
+        },
+        declineRequest:{
+            method:"POST",
+            url:"/request/declineRequest"
+        },
+        accpetRequest:{
+            method:"POST",
+            url:"/request/acceptRequest"
+        },
+        getAcceptedRequest:{
+            method:"GET",
+            url:"/request/getAcceptedRequest"
+        },
+        getDeclinedRequest:{
+            method:"GET",
+            url:"/request/getDeclinedRequest"
         }
         
     }

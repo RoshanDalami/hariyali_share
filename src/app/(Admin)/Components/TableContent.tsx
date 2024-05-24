@@ -5,17 +5,21 @@ export default function TableContent({
   name,
   date,
   open,
-  id
+  id,
+  sufix,
+  link
 }: {
   name: string;
   date: string;
   open: Boolean;
-  id:string
+  id:string;
+  sufix:string;
+  link:string
 }) {
     const router = useRouter();
     const handleRotuer = async()=>{
         await UpdateOpenStatus(id);
-        router.push(`/admin/newrequest/${id}`)
+        router.push(`${link}/${id}`)
     }
   return (
     <div
@@ -25,7 +29,7 @@ export default function TableContent({
 
      onClick={()=>handleRotuer()}
     >
-      <div className="ml-4  text-[14px] "> New Share Request By ::{" "}{" "} 
+      <div className="ml-4  text-[14px] "> {sufix}{" "}{" "} 
       <span className=" uppercase ">
 
       {name}

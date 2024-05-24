@@ -97,6 +97,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["District", pernamentstateId],
     queryFn: () => getDistrict(pernamentstateId),
+    enabled:!!pernamentstateId
   });
 
   const {
@@ -106,6 +107,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["palika", pernamentDistrictId],
     queryFn: () => getPalika(pernamentDistrictId),
+    enabled:!!pernamentDistrictId
   });
 
   const {
@@ -115,6 +117,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["Temp District", tempStateId],
     queryFn: () => getDistrict(tempStateId),
+    enabled:!!tempStateId
   });
 
   const {
@@ -124,6 +127,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["Temp Palika", tempDistrictId],
     queryFn: () => getPalika(tempDistrictId),
+    enabled:!!tempDistrictId
   });
 
   const appendHandler = (e: FormEvent) => {
@@ -144,6 +148,7 @@ export default function CreateApplicaton() {
     setImagePreviewBack(URL.createObjectURL(file));
   };
   const totalAmount = watch("shareQuantity") * watch("shareRate");
+
   const onSubmit = async (data: any) => {
     const formData = new FormData();
 
@@ -160,7 +165,7 @@ export default function CreateApplicaton() {
     formData?.set("contactNumber", data.contactNumber);
     formData.set("shareRate", data.shareRate);
     formData.set("shareQuantity", data?.shareQuantity);
-    formData.set("totalShareAmount", data.totalShareAmount);
+    formData.set("totalShareAmount", JSON.stringify(totalAmount));
     formData.set("permanentAddress", JSON.stringify(data.permanentAddress));
     formData.set("temporaryAddress", JSON.stringify(data.temporaryAddress));
     formData.set('date',aa)
@@ -675,7 +680,7 @@ export default function CreateApplicaton() {
                 <input
                   type="text"
                   className="inputStyle"
-                  {...register("totalShareAmount", {
+                  {...register("totalShareAmount", { valueAsNumber:true,
                     required: "Account number is required",
                   })}
                   value={totalAmount}

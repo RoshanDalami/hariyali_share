@@ -5,7 +5,12 @@ import Image from "next/image";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/Zod/resolver";
+import { useRouter } from "next/navigation";
+
+import {Login} from '@/services/apiServices/user/userServices';
+import Cookies from "js-cookie";
 export default function LoginForm() {
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -16,7 +21,17 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: FieldValues) => {
-    console.log(data);
+    try {
+      const response = await Login(data);
+      console.log(response?.data?.accessToken,'response')
+      if(response?.status === 200){
+        Cookies.set('token',response?.data?.accessToken);
+        router.push('/admin/dashboard')
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -82,7 +97,7 @@ export default function LoginForm() {
             type="submit"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "" : "Login"}
+            {isSubmitting ? "submitting..." : "Login"}
           </button>
         </form>
       </div>

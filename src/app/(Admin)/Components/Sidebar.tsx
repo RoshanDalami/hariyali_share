@@ -7,10 +7,24 @@ import {
   ShieldCheckIcon,
   ArchiveBoxXMarkIcon,
   DocumentTextIcon,
+  FolderOpenIcon
 } from "@heroicons/react/24/solid";
 const Sidebar = () => {
+
   const pathname = usePathname();
+  
   const arr = [
+    {
+      title: "Fiscal Year ",
+      Link: "/admin/fiscalyear",
+      icon: (
+        <FolderOpenIcon
+          className={`h-6 w-6  ${
+            pathname === "/admin/fiscalyear" ? "text-white" : "text-indigo-600"
+          }  `}
+        />
+      ),
+    },
     {
       title: "Dashboard",
       Link: "/admin/dashboard",
