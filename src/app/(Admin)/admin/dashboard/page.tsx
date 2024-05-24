@@ -29,6 +29,9 @@ const arr = [
     ),
   },
 ];
+
+
+
 export default function Admin() {
   return (
     <div className="flex  ">
