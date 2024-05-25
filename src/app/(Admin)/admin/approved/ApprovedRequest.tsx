@@ -7,6 +7,7 @@ import { ShareRequest } from "@/types/types";
 import Image from "next/image";
 import approve from '../../../../../public/approved.svg'
 import { CircularProgress } from "@mui/material";
+import Error from "../../Components/Error";
 export default function ApprovedRequest() {
   const getApprovedRequest = async () => {
     const { data } = await GetAcceptedRequest();
@@ -37,6 +38,10 @@ export default function ApprovedRequest() {
         <CircularProgress size={100} />
       </div>
     );
+
+    if(isError){
+      return <Error/>
+    }
   return (
     <div>
       {ApprovedRequest?.map((item: ShareRequest, index: number) => {

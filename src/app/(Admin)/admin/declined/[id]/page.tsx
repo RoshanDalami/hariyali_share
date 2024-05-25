@@ -170,6 +170,10 @@ export default function IndividualRequest() {
               {" "}
               Share Applied Date : {IndividualRequest?.date}
             </p>
+            <p className="font-bold">
+              {" "}
+              Declined Reason : {IndividualRequest?.remarks}
+            </p>
           </div>
         </FormBorder>
         {/* <div className="my-3  flex gap-4 justify-end mx-9">

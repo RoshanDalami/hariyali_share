@@ -67,3 +67,11 @@ export async function GetDeclinedRequest(){
     );
     return response
 }
+
+export async function GenerateCertificate(id:string){
+  let response = await mainApi(
+    apiUrls.request.generateCertificate.method,
+    apiUrls.request.generateCertificate.url+`/${id?id:''}`,
+  )
+  return response
+}

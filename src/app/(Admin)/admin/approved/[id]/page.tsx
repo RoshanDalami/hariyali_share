@@ -57,6 +57,12 @@ export default function IndividualRequest() {
   return (
     <div className=" flex flex-col min-w-[80vw]  ">
       <div className="mb-6">
+      {
+        IndividualRequest?.shareCertificateNumber ? <></> : <div className="my-4 flex justify-end mx-10">
+        <button className="bg-green-600 rounded-md shadow-md text-white px-4 py-2 font-bold">Generate Certificate</button>
+      </div>
+      }
+        
         <FormBorder title="Personal Details">
           <div className=" grid grid-cols-3 px-3 py-6">
             <p className="font-bold capitalize">

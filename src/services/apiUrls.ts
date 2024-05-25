@@ -75,6 +75,10 @@ export const apiUrls = {
         getDeclinedRequest:{
             method:"GET",
             url:"/request/getDeclinedRequest"
+        },
+        generateCertificate:{
+            method:"GET",
+            url:"/request/generateCertificate"
         }
         
     }

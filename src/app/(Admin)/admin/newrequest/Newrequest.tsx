@@ -5,16 +5,16 @@ import { useQuery } from "@tanstack/react-query";
 import { GetRequest } from "@/services/apiServices/request/requestServices";
 import { ShareRequest } from "@/types/types";
 import Image from "next/image";
-import ErrorImage from '../.../../../../../../public/error.svg'
 import note from '../../../../../public/note.svg'
 import CircularProgress from "@mui/material/CircularProgress";
+import Error from "../../Components/Error";
 
 const NewRequest = () => {
   const getRequestData = async () => {
     const { data } = await GetRequest();
     return data;
   };
-  const {
+  let {
     data: shareRequestList,
     isError,
     isLoading,
@@ -32,6 +32,7 @@ const NewRequest = () => {
       </div>
     );
   }
+  isError = true
   if (isLoading)
     return (
       <div className="h-screen w-[80vw] flex items-center justify-center">
@@ -41,12 +42,7 @@ const NewRequest = () => {
 
     if(isError){
       return (
-        <div >
-          <Image src={ErrorImage} alt="" width={500} height={500} />
-          <h1></h1>
-
-
-        </div>
+        <Error/>
       )
     }
   return (

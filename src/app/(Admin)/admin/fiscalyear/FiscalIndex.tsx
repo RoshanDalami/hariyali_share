@@ -11,6 +11,7 @@ import TableBorder from "@/app/(public)/Components/TableBorder";
 import addFiscal from '../../../../../public/addFiscal.svg'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import Link from "next/link";
+import Error from "../../Components/Error";
 export default function FiscalIndex() {
   const getFiscal = async () => {
     const { data } = await GetFiscal();
@@ -48,9 +49,7 @@ export default function FiscalIndex() {
 
     if(isError) {
       return (
-        <div>
-
-        </div>
+       <Error/>
       )
     }
 

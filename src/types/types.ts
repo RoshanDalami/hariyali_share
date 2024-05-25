@@ -37,6 +37,8 @@ interface Address {
     shareNumberEnd: number;
     isOpened: boolean;
     date: string;
+    shareCertificateNumber:string;
+    remarks:string;
     __v: number;
   }
   
