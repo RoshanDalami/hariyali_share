@@ -7,12 +7,14 @@ import { ShareRequest } from "@/types/types";
 import Image from "next/image";
 import note from '../../../../../public/note.svg'
 import CircularProgress from "@mui/material/CircularProgress";
+import Error from "../../Components/Error";
+
 const NewRequest = () => {
   const getRequestData = async () => {
     const { data } = await GetRequest();
     return data;
   };
-  const {
+  let {
     data: shareRequestList,
     isError,
     isLoading,
@@ -30,12 +32,19 @@ const NewRequest = () => {
       </div>
     );
   }
+  isError = true
   if (isLoading)
     return (
       <div className="h-screen w-[80vw] flex items-center justify-center">
         <CircularProgress size={100} />
       </div>
     );
+
+    if(isError){
+      return (
+        <Error/>
+      )
+    }
   return (
     <div className="">
       {shareRequestList?.map((item: ShareRequest, index: number) => {

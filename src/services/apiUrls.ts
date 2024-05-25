@@ -25,6 +25,22 @@ export const apiUrls = {
         getPalika:{
             method:"GET",
             url:"/office/getPalika"
+        },
+        createFiscalYear:{
+            method:"POST",
+            url:"/office/createFiscal"
+        },
+        getFiscal:{
+            method:"GET",
+            url:"/office/getFiscal"
+        },
+        getFiscalById:{
+            method:"GET",
+            url:"/office/getFiscalYearById"
+        },
+        updateStatus:{
+            method:"GET",
+            url:"/office/updateFiscalYearStatus"
         }
     },
     request:{
@@ -59,6 +75,10 @@ export const apiUrls = {
         getDeclinedRequest:{
             method:"GET",
             url:"/request/getDeclinedRequest"
+        },
+        generateCertificate:{
+            method:"GET",
+            url:"/request/generateCertificate"
         }
         
     }

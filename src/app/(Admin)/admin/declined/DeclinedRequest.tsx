@@ -7,6 +7,7 @@ import TableContent from '../../Components/TableContent'
 import { CircularProgress } from '@mui/material'
 import Image from 'next/image'
 import decline from '../../../../../public/decline.svg'
+import Error from '../../Components/Error'
 export default function DeclinedRequest() {
     const getDeclinedRequest = async ()=>{
         const {data} = await GetDeclinedRequest();
@@ -31,7 +32,11 @@ export default function DeclinedRequest() {
         <div className="h-screen w-[80vw] flex items-center justify-center">
           <CircularProgress size={100} />
         </div>
-      );
+      )
+
+    if(isError){
+      return <Error/>
+    }
   return (
     <div>
       {DeclinedRequest?.map((item: ShareRequest, index: number) => {

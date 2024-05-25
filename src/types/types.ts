@@ -37,6 +37,19 @@ interface Address {
     shareNumberEnd: number;
     isOpened: boolean;
     date: string;
+    shareCertificateNumber:string;
+    remarks:string;
     __v: number;
   }
   
+
+  export interface FiscalYear {
+    _id:string,
+    fiscalYear:string,
+    startYear:number,
+    endYear:number,
+    startDate:string,
+    endDate:string,
+    status:boolean,
+    __v:number
+  }

@@ -1,9 +1,9 @@
 import React from 'react'
-import CreateFiscal from './CreateFiscal'
+import CreateFiscalComp from './CreateFiscal'
 export default function CreateFiscalPage() {
   return (
     <div>
-      <CreateFiscal/>
+      <CreateFiscalComp/>
     </div>
   )
 }
