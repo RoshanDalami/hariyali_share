@@ -1,7 +1,10 @@
 import React from "react";
+import DeclinedRequest from "./DeclinedRequest";
 
-const page = () => {
-  return <div>Your request hasbeen declined</div>;
+const Declined = () => {
+  return <div>
+    <DeclinedRequest/>
+  </div>;
 };
 
-export default page;
+export default Declined;
