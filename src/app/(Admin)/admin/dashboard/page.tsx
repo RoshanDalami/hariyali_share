@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Items from "../../Components/Items";
 import {
@@ -5,34 +7,66 @@ import {
   ShieldCheckIcon,
   ArchiveBoxXMarkIcon,
 } from "@heroicons/react/24/solid";
+import { useQuery } from "@tanstack/react-query";
 
-const arr = [
-  {
-    title: "New Request",
-    number: "5",
-    icon: (
-      <DocumentTextIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
-    ),
-  },
-  {
-    title: "Approved",
-    number: "5",
-    icon: (
-      <ShieldCheckIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-green-600" />
-    ),
-  },
-  {
-    title: "Declined",
-    number: "5",
-    icon: (
-      <ArchiveBoxXMarkIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
-    ),
-  },
-];
-
-
+import {
+  GetNewRequestCount,
+  GetApprovedCount,
+  GetDeclinedCount,
+} from "@/services/apiServices/request/requestServices";
 
 export default function Admin() {
+  const getNewRequestCount = async () => {
+    const { data } = await GetNewRequestCount();
+    return data;
+  };
+  const getApprovedCount = async () => {
+    const { data } = await GetApprovedCount();
+    return data;
+  };
+  const getDeclined = async()=>{
+    const {data} = await GetDeclinedCount();
+    return data
+  }
+  const {
+    data: NewRequest,
+    isError: NewRequestError,
+    isLoading: NewRequestLoading,
+  } = useQuery({
+    queryKey: ["new request count"],
+    queryFn: getNewRequestCount,
+  });
+  const { data: Approved } = useQuery({
+    queryKey: ["approved request"],
+    queryFn: getApprovedCount,
+  });
+  const {data:Declined} = useQuery({
+    queryKey:['declined'],
+    queryFn:getDeclined
+  })
+  const arr = [
+    {
+      title: "New Request",
+      number: NewRequest,
+      icon: (
+        <DocumentTextIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
+      ),
+    },
+    {
+      title: "Approved",
+      number: Approved,
+      icon: (
+        <ShieldCheckIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-green-600" />
+      ),
+    },
+    {
+      title: "Declined",
+      number: Declined,
+      icon: (
+        <ArchiveBoxXMarkIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
+      ),
+    },
+  ];
   return (
     <div className="flex  ">
       {/* <Items />

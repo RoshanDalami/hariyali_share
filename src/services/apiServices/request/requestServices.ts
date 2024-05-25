@@ -75,3 +75,26 @@ export async function GenerateCertificate(id:string){
   )
   return response
 }
+
+export async function GetNewRequestCount(){
+  let response = await mainApi(
+    apiUrls.request.getNewRequestCount.method,
+    apiUrls.request.getNewRequestCount.url,
+  )
+  return response
+}
+
+export async function GetApprovedCount(){
+  let response = await mainApi(
+    apiUrls.request.getApprovedCount.method,
+    apiUrls.request.getApprovedCount.url,
+  )
+  return response
+}
+export async function GetDeclinedCount(){
+  let response = await mainApi(
+    apiUrls.request.getDeclinedCount.method,
+    apiUrls.request.getDeclinedCount.url,
+  )
+  return response
+}
