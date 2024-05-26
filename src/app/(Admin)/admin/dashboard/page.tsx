@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Items from "../../Components/Items";
 import {
   DocumentTextIcon,
   ShieldCheckIcon,
