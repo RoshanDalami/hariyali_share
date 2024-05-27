@@ -11,9 +11,9 @@ export default function NavBar() {
         </Link>
       </div>
       <div className='flex gap-3 items-center'>
-        <Link href={'/application'} className=' cursor-pointer'>
+        <Link href={'/s/login'} className=' cursor-pointer'>
         <button className='bg-blue-600 text-white rounded-md shadow-md px-3 py-2'>
-            Application
+            For User
         </button>
         </Link>
         <Link href={'/login'} className=' cursor-pointer' >
