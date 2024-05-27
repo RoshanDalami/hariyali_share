@@ -6,10 +6,10 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/Zod/resolver";
 import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 import {Login} from '@/services/apiServices/user/userServices';
 import Cookies from "js-cookie";
-export default function LoginForm() {
+export default function LoginFormUser() {
   const router = useRouter()
   const {
     register,
@@ -26,7 +26,7 @@ export default function LoginForm() {
       console.log(response?.data?.accessToken,'response')
       if(response?.status === 200){
         Cookies.set('token',response?.data?.accessToken);
-        router.push('/admin/dashboard')
+        router.push('/user')
       }
 
     } catch (error) {
@@ -47,8 +47,8 @@ export default function LoginForm() {
       </div>
       <div className="w-full">
         <div className="flex flex-col gap-3">
-          <h1 className="text-xl font-bold text-green-700">
-            Welcome to Hariyali Share Platform !
+          <h1 className="text-2xl font-bold text-green-700">
+            Welcome User to Hariyali Share Platform !
           </h1>
           <h1 className="text-xl">Sign in</h1>
         </div>
@@ -89,7 +89,13 @@ export default function LoginForm() {
               )}
             </div>
           </div>
-
+          <div>
+            <h1 className="text-center"> <span className="text-green-600">Don&apos;t have an account ?</span> {" "}
+                <Link href={'/s/register'}  >
+               <span className="text-blue-600"> Create Account</span> 
+                </Link>
+                </h1>
+          </div>
             {/* {
               errors?.password && <p className="text-red-600">{errors?.password?.message}</p>
             } */}

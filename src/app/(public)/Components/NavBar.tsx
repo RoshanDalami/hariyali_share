@@ -18,7 +18,7 @@ export default function NavBar() {
         </Link>
         <Link href={'/login'} className=' cursor-pointer' >
         <button className='bg-red-600 text-white rounded-md shadow-md px-3 py-2'>
-            Login
+            For Admin
         </button>
         </Link>
       </div>
