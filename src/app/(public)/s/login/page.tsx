@@ -1,9 +1,9 @@
 import React from 'react'
-
+import LoginFormUser from './Login'
 export default function Login() {
   return (
-    <div>
-      <h1>login</h1>
+    <div className='h-screen flex items-center justify-center'>
+     <LoginFormUser/>
     </div>
   )
 }
