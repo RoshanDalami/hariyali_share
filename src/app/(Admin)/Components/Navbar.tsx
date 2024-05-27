@@ -1,6 +1,9 @@
+'use client'
 import React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 const Navbar = () => {
+  const router = useRouter()
   return (
     <div className="flex fixed bg-white h-[88px] w-full  z-10 border-b border-gray-300 ">
       <div className="flex items-center ml-12 gap-4">
@@ -17,10 +20,11 @@ const Navbar = () => {
           Hariyali Share
         </p>
       </div>
-      <div className=" flex items-center  ml-auto mr-12">
+      <div className=" flex items-center gap-3  ml-auto mr-12">
         <p className="text-green-600  text-2xl font-bold">
           <span className="text-black font-normal">Welcome!!</span> Super Admin
         </p>
+        <button className="bg-red-600 rounded-md shadow-md text-white px-3 py-2" onClick={()=>router.push('/')} >logout</button>
       </div>
     </div>
   );

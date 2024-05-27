@@ -1,8 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-export const baseurl = 'https://hariyali-share-backend.onrender.com/api/v1';
-
+// export const baseurl = 'https://hariyali-share-backend.onrender.com/api/v1';
+export const baseurl = 'http://localhost:8000/api/v1'
 // Create an instance of axios
 const apiClient = axios.create({
     baseURL: baseurl,

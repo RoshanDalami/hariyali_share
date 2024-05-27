@@ -5,6 +5,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
 import Image from "next/image";
 import { ShareRequest } from "@/types/types";
+import Certificatee from "@/app/(Admin)/Components/Certificatee";
 import {
   GetRequestById,
   AcceptRequest,
@@ -13,6 +14,7 @@ import {
 import FormBorder from "@/app/(public)/Components/FormBorder";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+
 export default function IndividualRequest() {
   const { id }: { id: string } = useParams();
   const router = useRouter();
@@ -57,12 +59,16 @@ export default function IndividualRequest() {
   return (
     <div className=" flex flex-col min-w-[80vw]  ">
       <div className="mb-6">
-      {
-        IndividualRequest?.shareCertificateNumber ? <></> : <div className="my-4 flex justify-end mx-10">
-        <button className="bg-green-600 rounded-md shadow-md text-white px-4 py-2 font-bold">Generate Certificate</button>
-      </div>
-      }
-        
+        {IndividualRequest?.shareCertificateNumber ? (
+          <></>
+        ) : (
+          <div className="my-4 flex justify-end mx-10">
+            <button className="bg-green-600 rounded-md shadow-md text-white px-4 py-2 font-bold">
+              Generate Certificate
+            </button>
+          </div>
+        )}
+
         <FormBorder title="Personal Details">
           <div className=" grid grid-cols-3 px-3 py-6">
             <p className="font-bold capitalize">
@@ -80,9 +86,7 @@ export default function IndividualRequest() {
             <p className="font-bold capitalize">
               Spouse Name : {IndividualRequest?.spouseName}
             </p>
-            <p className="font-bold ">
-              Email : {IndividualRequest?.email}
-            </p>
+            <p className="font-bold ">Email : {IndividualRequest?.email}</p>
           </div>
         </FormBorder>
 
@@ -178,13 +182,15 @@ export default function IndividualRequest() {
             </p>
           </div>
         </FormBorder>
+        <Certificatee IndividualRequest={IndividualRequest!}/>
+
         {/* <div className="my-3  flex gap-4 justify-end mx-9">
           <button
             className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md"
             onClick={() => handleDecline()}
           >
             Decline
-          </button>
+          </button>   
           <button
             className="bg-green-600 text-white px-6 py-2 rounded-md shadow-md"
             onClick={() => handleConfirm()}
