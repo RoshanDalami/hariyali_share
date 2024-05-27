@@ -46,21 +46,21 @@ export default function Admin() {
   const arr = [
     {
       title: "New Request",
-      number: NewRequest,
+      number: 1,
       icon: (
         <DocumentTextIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
       ),
     },
     {
       title: "Approved",
-      number: Approved,
+      number: 1,
       icon: (
         <ShieldCheckIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-green-600" />
       ),
     },
     {
       title: "Declined",
-      number: Declined,
+      number: 2,
       icon: (
         <ArchiveBoxXMarkIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
       ),
