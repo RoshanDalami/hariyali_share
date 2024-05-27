@@ -4,18 +4,18 @@ import logo from "/public/logo_circle.jpeg";
 
 const Certificatee = () => {
   return (
-    <div className="h-[700px] w-[910px] border-2 border-green-500 mt-4 ml-36" >
-      <div className="  h-[650px] w-[900px] border-2  ">
-        <div className=" flex  w-full h-[100px] ml-2 ">
+    <div className="h-[700px] w-[910px] border-2 border-green-500 mt-4 ml-36">
+      <div className="  h-[650px] w-[900px]  ">
+        <div className=" flex  w-full h-[100px] ml-2  ">
           <Image width={100} height={40} src={logo} alt="certi" />
-          <h1 className="text-5xl uppercase text-[#049353] text-bold ml-20 mt-4 ">
+          <h1 className="text-5xl uppercase text-[#049353] text-bold ml-24 mt-4 ">
             hariyali abhiyan
           </h1>
         </div>
-        <div className=" flex-col justify-center items-center ml-80 ">
-          <p className="text-sm font-semibold">रजिष्टर्ड कार्यालय: कामनाडौं</p>
-          <p className="text-sm font-semibold">(शेयरमा सीमित दायित्व भएको)</p>
-          <p className=" text-lg text-[#049353] font-bold ">(सस्थापक समूह)</p>
+        <div className="flex  flex-col justify-center items-center   ">
+          <p className="flex text-sm font-semibold">रजिष्टर्ड कार्यालय: कामनाडौं</p>
+          <p className=" flex text-sm font-semibold">(शेयरमा सीमित दायित्व भएको)</p>
+          <p className="flex  text-lg text-[#049353] font-bold ">(सस्थापक समूह)</p>
         </div>
 
         <div className="grid grid-cols-3 items-center mt-2  h-[200px]">
@@ -23,14 +23,14 @@ const Certificatee = () => {
           <h1 className=" flex text-4xl text-[#EB1924] font-semibold">
             शेयर प्रमाण-पत्र
           </h1>
-          <div className="flex justify-end  ">
+          <div className="flex justify-end mr-2  font-semibold">
             <div className="space-y-4">
-              <p>शेयर प्रमाणपत्र नं.: ...............................</p>
+              <p>शेयर प्रमाणपत्र नं.: .............................</p>
               {/* <p>शेयरधनी नं.: .......................................</p> */}
-              <p>शेयर कित्ता संख्या: ...............................</p>
+              <p>शेयर कित्ता संख्या: .............................</p>
             </div>
           </div>
-          <div className=" flex flex-col gap-6 col-span-3 h-[300px] w-full p-4 font-semibold text-sm ">
+          <div className=" flex flex-col gap-6 col-span-3 h-[300px] w-full p-4  text-sm mx-10 font-semibold">
             <p>
               {" "}
               श्री
@@ -84,20 +84,34 @@ const Certificatee = () => {
             </div>
           </div> */}
 
-          <div className="flex  mt-10   w-[880px] p-2  ">
-            <div className="   w-full">
+          <div className="flex  w-[880px]  justify-around mt-12 mx-6 ">
+            <div className="   w-full  mt-2 ml-2 ">
               <p>कम्पनीको छाप</p>
               <p>मिति:२०८०।१९।२५</p>
             </div>
-            <div className="w-full ">
+            <div className=" flex flex-col w-full  justify-center ">
               <p>....................................................</p>
               <p>कम्पनीको सचित/प्रमुख कार्यलय अधिकृत सन्चलख</p>
             </div>
-            <div className="w-full">
+            <div className=" flex flex-col w-full justify-end">
               <p>...................................</p>
               <p>अध्याक्ष</p>
             </div>
           </div>
+          {/* <div className="grid grid-cols-3  w-full">
+            <div className="bg-red-500">
+              <p>कम्पनीको छाप</p>
+              <p>मिति:२०८०।१९।२५</p>
+            </div>
+            <div>
+              <p>....................................................</p>
+              <p>कम्पनीको सचित/प्रमुख कार्यलय अधिकृत सन्चलख</p>
+            </div>
+            <div>
+              <p>...................................</p>
+              <p>अध्याक्ष</p>
+            </div>
+          </div> */}
         </div>
       </div>
     </div>
