@@ -32,7 +32,6 @@ const NewRequest = () => {
       </div>
     );
   }
-  isError = true
   if (isLoading)
     return (
       <div className="h-screen w-[80vw] flex items-center justify-center">

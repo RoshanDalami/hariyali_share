@@ -1,7 +1,7 @@
 "use client";
 import React, { FormEvent, use, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import FormBorder from "../Components/FormBorder";
+import FormBorder from "../../Components/FormBorder";
 import { PlusIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import {
@@ -15,7 +15,7 @@ import BikramSambat, { ADToBS, BSToAD } from "bikram-sambat-js";
 const aa = new BikramSambat(new Date()).toBS();
 import { useRouter } from "next/navigation";
 export default function CreateApplicaton() {
-  const router = useRouter()
+  const router = useRouter();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -57,6 +57,8 @@ export default function CreateApplicaton() {
         tole: "",
         houseNo: "",
       },
+      password:'',
+      voucherImage:""
     },
   });
   const { append, remove, fields } = useFieldArray({
@@ -97,7 +99,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["District", pernamentstateId],
     queryFn: () => getDistrict(pernamentstateId),
-    enabled:!!pernamentstateId
+    enabled: !!pernamentstateId,
   });
 
   const {
@@ -107,7 +109,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["palika", pernamentDistrictId],
     queryFn: () => getPalika(pernamentDistrictId),
-    enabled:!!pernamentDistrictId
+    enabled: !!pernamentDistrictId,
   });
 
   const {
@@ -117,7 +119,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["Temp District", tempStateId],
     queryFn: () => getDistrict(tempStateId),
-    enabled:!!tempStateId
+    enabled: !!tempStateId,
   });
 
   const {
@@ -127,7 +129,7 @@ export default function CreateApplicaton() {
   } = useQuery({
     queryKey: ["Temp Palika", tempDistrictId],
     queryFn: () => getPalika(tempDistrictId),
-    enabled:!!tempDistrictId
+    enabled: !!tempDistrictId,
   });
 
   const appendHandler = (e: FormEvent) => {
@@ -168,11 +170,13 @@ export default function CreateApplicaton() {
     formData.set("totalShareAmount", JSON.stringify(totalAmount));
     formData.set("permanentAddress", JSON.stringify(data.permanentAddress));
     formData.set("temporaryAddress", JSON.stringify(data.temporaryAddress));
-    formData.set('date',aa)
+    formData.set("date", aa);
+    formData.set('password',data.password)
+    formData.set('voucherImage',data?.voucherImage[0])
 
     const response = await CreateRequest(formData);
-    if(response?.status === 200){
-      router.push('/')
+    if (response?.status === 200) {
+      router.push("/");
     }
   };
 
@@ -186,14 +190,6 @@ export default function CreateApplicaton() {
         >
           <div className="grid md:grid-cols-2  ">
             <FormBorder title="Personal Information">
-              <div className="flex justify-end mx-4">
-                <button
-                  className="bg-green-500 rounded-md text-white p-1 font-bold"
-                  onClick={(e) => appendHandler(e)}
-                >
-                  <PlusIcon className="h-6 w-6" />
-                </button>
-              </div>
               <div className="grid md:grid-cols-2 gap-3 px-3 py-3">
                 <div className="flex flex-col">
                   <label className="labelText">
@@ -305,8 +301,15 @@ export default function CreateApplicaton() {
                     placeholder="दम्पतिको नाम"
                   />
                 </div>
-
-                <div>
+                <div className="relative">
+                  <div className="flex absolute  right-0 justify-end mx-4">
+                    <button
+                      className="bg-green-500 rounded-md text-white p-1 font-bold"
+                      onClick={(e) => appendHandler(e)}
+                    >
+                      <PlusIcon className="h-6 w-6" />
+                    </button>
+                  </div>
                   {fields?.map((field, index) => {
                     return (
                       <div
@@ -445,7 +448,7 @@ export default function CreateApplicaton() {
                         className="inputStyle"
                         {...register("permanentAddress.stateId")}
                       >
-                        <option value="" selected disabled>
+                        <option value={0} selected disabled>
                           -- Select State --
                         </option>
                         {states?.map((item: any, index: number) => {
@@ -466,7 +469,7 @@ export default function CreateApplicaton() {
                         className="inputStyle"
                         {...register("permanentAddress.districtId")}
                       >
-                        <option value="" selected disabled>
+                        <option value={0} selected disabled>
                           -- Select District --
                         </option>
                         {district?.map((item: any, index: number) => {
@@ -487,8 +490,8 @@ export default function CreateApplicaton() {
                         className="inputStyle"
                         {...register("permanentAddress.palikaId")}
                       >
-                        <option value="" selected disabled>
-                          -- Select State --
+                        <option value={0} selected disabled>
+                          -- Select Palika --
                         </option>
                         {palika?.map((item: any, index: any) => {
                           return (
@@ -556,7 +559,7 @@ export default function CreateApplicaton() {
                         className="inputStyle"
                         {...register("temporaryAddress.stateId")}
                       >
-                        <option value="">-- Select State --</option>
+                        <option value={0} selected disabled>-- Select State --</option>
                         {states?.map((item: any, index: number) => {
                           return (
                             <option key={index} value={item.stateId}>
@@ -575,7 +578,7 @@ export default function CreateApplicaton() {
                         className="inputStyle"
                         {...register("temporaryAddress.districtId")}
                       >
-                        <option value="">-- Select State --</option>
+                        <option value={0} selected disabled>-- Select District --</option>
                         {tempDistrict?.map((item: any, index: number) => {
                           return (
                             <option key={index} value={item.districtId}>
@@ -594,7 +597,7 @@ export default function CreateApplicaton() {
                         className="inputStyle"
                         {...register("temporaryAddress.palikaId")}
                       >
-                        <option value="">-- Select State --</option>
+                        <option value={0} selected disabled>-- Select Palika --</option>
                         {tempPalika?.map((item: any, index: number) => {
                           return (
                             <option key={index} value={item.palikaId}>
@@ -680,7 +683,8 @@ export default function CreateApplicaton() {
                 <input
                   type="text"
                   className="inputStyle"
-                  {...register("totalShareAmount", { valueAsNumber:true,
+                  {...register("totalShareAmount", {
+                    valueAsNumber: true,
                     required: "Account number is required",
                   })}
                   value={totalAmount}

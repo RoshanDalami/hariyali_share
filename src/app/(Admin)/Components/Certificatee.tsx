@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import logo from "/public/logo_circle.jpeg";
+import { ShareRequest } from "@/types/types";
 
-const Certificatee = () => {
+const Certificatee = ({IndividualRequest}:{IndividualRequest:ShareRequest}) => {
   return (
     <div className="h-[700px] w-[910px] border-2 border-green-500 mt-4 ml-36">
       <div className="  h-[650px] w-[900px]  ">
@@ -25,18 +26,20 @@ const Certificatee = () => {
           </h1>
           <div className="flex justify-end mr-2  font-semibold">
             <div className="space-y-4">
+
               <p>शेयर प्रमाणपत्र नं.: .............................</p>
               {/* <p>शेयरधनी नं.: .......................................</p> */}
               <p>शेयर कित्ता संख्या: .............................</p>
+
             </div>
           </div>
           <div className=" flex flex-col gap-6 col-span-3 h-[300px] w-full p-4  text-sm mx-10 font-semibold">
             <p>
               {" "}
               श्री
-              .........................................................................................को
+              ........{IndividualRequest?.grandFatherName}.....................................................को
               नाति/नातिनी श्री
-              ................................................................................
+              ..............{IndividualRequest?.fatherName}..........................................
             </p>
             <p>
               को छोरा/छोरी श्री

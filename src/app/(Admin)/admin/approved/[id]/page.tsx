@@ -14,7 +14,7 @@ import {
 import FormBorder from "@/app/(public)/Components/FormBorder";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { Certificate } from "crypto";
+
 export default function IndividualRequest() {
   const { id }: { id: string } = useParams();
   const router = useRouter();
@@ -182,7 +182,7 @@ export default function IndividualRequest() {
             </p>
           </div>
         </FormBorder>
-        <Certificatee />
+        <Certificatee IndividualRequest={IndividualRequest!}/>
 
         {/* <div className="my-3  flex gap-4 justify-end mx-9">
           <button

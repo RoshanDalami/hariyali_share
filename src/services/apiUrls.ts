@@ -93,4 +93,18 @@ export const apiUrls = {
       url: "/request/getDeclinedCount",
     },
   },
+  admin:{
+    create:{
+      method:"POST",
+      url:"/admin/createAdmin"
+    },
+    login:{
+      method:"POST",
+      url:"/admin/adminLogin"
+    },
+    me:{
+      method:"GET",
+      url:"/admin/me"
+    }
+  }
 };
