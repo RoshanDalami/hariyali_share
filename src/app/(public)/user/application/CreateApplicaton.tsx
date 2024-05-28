@@ -1,6 +1,6 @@
 "use client";
-import React, { FormEvent, use, useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import React, {useState, useEffect } from "react";
+import {useForm } from "react-hook-form";
 import FormBorder from "../../Components/FormBorder";
 import { PlusIcon, QrCodeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -12,24 +12,30 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { CreateRequest } from "@/services/apiServices/request/requestServices";
 import BikramSambat, { ADToBS, BSToAD } from "bikram-sambat-js";
+import { NepaliDatePicker } from "nepali-datepicker-reactjs";
+import "nepali-datepicker-reactjs/dist/index.css";
 const aa = new BikramSambat(new Date()).toBS();
 import { useRouter } from "next/navigation";
 import Modal from "../../Components/Modal";
-import modelImage from "../../../../../public/st.jpg";
+import modelImage from "../../../../../public/qr.jpeg";
+
 export default function CreateApplicaton() {
   const router = useRouter();
   const [showQR, setShowQR] = useState(false);
+
+  const [date, setDate] = useState(aa);
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
     control,
     watch,
+    setValue,
   } = useForm({
     // resolver: zodResolver(applicationResolver),
     defaultValues: {
       name: "",
-      personalImage:'',
+      personalImage: "",
       grandFatherName: "",
       fatherName: "",
       motherName: "",
@@ -85,6 +91,7 @@ export default function CreateApplicaton() {
         },
       },
       nid: "",
+      checkedNominee: false,
     },
   });
 
@@ -102,7 +109,7 @@ export default function CreateApplicaton() {
     "nominee.permanentAddress.districtId"
   );
   const NomineeTempStateId = watch("nominee.temporaryAddress.stateId");
-  const NomineeTempDistrictId = watch("nominee.permanentAddress.districtId");
+  const NomineeTempDistrictId = watch("nominee.temporaryAddress.districtId");
   const getDistrict = async (id: number) => {
     const { data } = await GetDistrict(id);
     return data;
@@ -195,7 +202,9 @@ export default function CreateApplicaton() {
     setImagePreviewFront(URL.createObjectURL(file));
   };
   const [personalImagePreview, setPersonalImage] = useState("");
-  const handleFileChangePersonalImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChangePersonalImage = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (!e.target.files) return;
     const file = e.target.files[0];
     setPersonalImage(URL.createObjectURL(file));
@@ -207,12 +216,65 @@ export default function CreateApplicaton() {
     setVoucherImagePreview(URL.createObjectURL(file));
   };
   const totalAmount = watch("shareQuantity") * watch("shareRate");
+  const watchFields = watch();
+
+  useEffect(() => {
+    if (watchFields?.checked === true) {
+      setValue(
+        "permanentAddress.stateId",
+        watchFields?.temporaryAddress?.stateId
+      );
+      setValue(
+        "permanentAddress.districtId",
+        watchFields?.temporaryAddress?.districtId
+      );
+      setValue(
+        "permanentAddress.palikaId",
+        watchFields?.temporaryAddress?.palikaId
+      );
+      setValue("permanentAddress.ward", watchFields?.temporaryAddress?.ward);
+      setValue("permanentAddress.tole", watchFields?.temporaryAddress?.tole);
+      setValue(
+        "permanentAddress.houseNo",
+        watchFields?.temporaryAddress?.houseNo
+      );
+    }
+  }, [watchFields, setValue]);
+
+  useEffect(() => {
+    if (watchFields?.checkedNominee === true) {
+      setValue(
+        "nominee.permanentAddress.stateId",
+        watchFields?.nominee?.temporaryAddress?.stateId
+      );
+      setValue(
+        "nominee.permanentAddress.districtId",
+        watchFields?.nominee?.temporaryAddress?.districtId
+      );
+      setValue(
+        "nominee.permanentAddress.palikaId",
+        watchFields?.nominee?.temporaryAddress?.palikaId
+      );
+      setValue(
+        "nominee.permanentAddress.ward",
+        watchFields?.nominee?.temporaryAddress?.ward
+      );
+      setValue(
+        "nominee.permanentAddress.tole",
+        watchFields?.nominee?.temporaryAddress?.tole
+      );
+      setValue(
+        "nominee.permanentAddress.houseNo",
+        watchFields?.nominee?.temporaryAddress?.houseNo
+      );
+    }
+  }, [setValue, watchFields]);
 
   const onSubmit = async (data: any) => {
     const formData = new FormData();
     console.log(data);
     formData.set("name", data.name);
-    formData.set("personalImage",data?.personalImage[0])
+    formData.set("personalImage", data?.personalImage[0]);
     formData.set("grandFatherName", data.grandFatherName);
     formData.set("children", JSON.stringify(data.children));
     formData.set("fatherName", data.fatherName);
@@ -231,9 +293,10 @@ export default function CreateApplicaton() {
     formData.set("password", data.password);
     formData.set("voucherImage", data?.voucherImage[0]);
     formData.set("nominee", JSON.stringify(data?.nominee));
+    formData.set("dateofBirth", date);
     const response = await CreateRequest(formData);
     if (response?.status === 200) {
-      router.push("/");
+      router.push("/user");
     }
   };
 
@@ -266,19 +329,6 @@ export default function CreateApplicaton() {
           className=""
           onSubmit={handleSubmit((data) => onSubmit(data))}
         >
-          <div className="flex items-center justify-end mx-10">
-            <button
-              className="flex items-center gap-3 bg-green-500 text-white font-semibold px-5 py-2 rounded-md shadow-md"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowQR(true);
-              }}
-            >
-              <QrCodeIcon className="h-6 w-6" />
-              Show QR
-            </button>
-          </div>
-
           <FormBorder title="व्यक्तिगत विवरण">
             <div className="grid md:grid-cols-2 gap-3 px-3 py-3">
               <div className="flex flex-col">
@@ -296,34 +346,34 @@ export default function CreateApplicaton() {
                 )}
               </div>
               <div className="flex flex-col">
-                  <label htmlFor="" className="labelText">
+                <label htmlFor="" className="labelText">
                   व्यक्तिगत फोटो <span className="text-red-600">*</span>
-                  </label>
-                  <input
-                    type="file"
-                    className="inputStyle"
-                    {...register("personalImage", {
-                      required: "Personal Image is required",
-                    })}
-                    placeholder="नागरिकता फ़्रोन्त फोटो"
-                    onChange={(e) => handleFileChangePersonalImage(e)}
+                </label>
+                <input
+                  type="file"
+                  className="inputStyle"
+                  {...register("personalImage", {
+                    required: "Personal Image is required",
+                  })}
+                  placeholder="नागरिकता फ़्रोन्त फोटो"
+                  onChange={(e) => handleFileChangePersonalImage(e)}
+                />
+                {errors?.personalImage && (
+                  <p className="text-red-600">
+                    {errors?.personalImage?.message}
+                  </p>
+                )}
+                {personalImagePreview ? (
+                  <Image
+                    alt=""
+                    src={personalImagePreview}
+                    width={100}
+                    height={100}
                   />
-                  {errors?.personalImage && (
-                    <p className="text-red-600">
-                      {errors?.personalImage?.message}
-                    </p>
-                  )}
-                  {personalImagePreview ? (
-                    <Image
-                      alt=""
-                      src={personalImagePreview}
-                      width={100}
-                      height={100}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </div>
+                ) : (
+                  ""
+                )}
+              </div>
               <div className="flex flex-col">
                 <label className="labelText">
                   इमेल <span className="text-red-600">*</span>
@@ -355,6 +405,18 @@ export default function CreateApplicaton() {
                     {errors?.contactNumber?.message}
                   </p>
                 )}
+              </div>
+              <div className="pt-2">
+                <label className="labelText">
+                  जन्म मिति <span className="text-red-600">*</span>
+                </label>
+                <NepaliDatePicker
+                  inputClassName="inputStyle w-full"
+                  className=""
+                  value={date}
+                  onChange={(value: string) => setDate(value)}
+                  options={{ calenderLocale: "ne", valueLocale: "en" }}
+                />
               </div>
 
               <div className="flex flex-col">
@@ -408,12 +470,12 @@ export default function CreateApplicaton() {
                 )}
               </div>
               <div className="flex flex-col">
-                <label className="labelText">दम्पतिको नाम</label>
+                <label className="labelText">श्रीमान / श्रीमती </label>
                 <input
                   type="text"
                   className="inputStyle"
                   {...register("spouseName")}
-                  placeholder="दम्पतिको नाम"
+                  placeholder="श्रीमान / श्रीमती"
                 />
               </div>
             </div>
@@ -438,7 +500,7 @@ export default function CreateApplicaton() {
                   )}
                 </div>
                 <div className="flex flex-col">
-                  <label className="labelText">परिचय पत्र नं.</label>
+                  <label className="labelText"> राष्ट्रिय परिचय पत्र नं.</label>
                   <input
                     type="Number"
                     className="inputStyle"
@@ -480,122 +542,11 @@ export default function CreateApplicaton() {
             </FormBorder>
 
             <div className="grid grid-cols-2">
-              <FormBorder title="स्थाई ठेगाना">
-                <div className="grid grid-cols-2 gap-3 px-3 py-2">
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      परदेश <span className="text-red-600">*</span>
-                    </label>
-                    <select
-                      id=""
-                      className="inputStyle"
-                      {...register("permanentAddress.stateId")}
-                    >
-                      <option value={0} selected disabled>
-                        -- Select State --
-                      </option>
-                      {states?.map((item: any, index: number) => {
-                        return (
-                          <option key={index} value={item.stateId}>
-                            {item.stateNameNep}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      जिल्ला <span className="text-red-600">*</span>
-                    </label>
-                    <select
-                      id=""
-                      className="inputStyle"
-                      {...register("permanentAddress.districtId")}
-                    >
-                      <option value={0} selected disabled>
-                        -- Select District --
-                      </option>
-                      {district?.map((item: any, index: number) => {
-                        return (
-                          <option key={index} value={item.districtId}>
-                            {item.districtNameNep}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      पालिका <span className="text-red-600">*</span>
-                    </label>
-                    <select
-                      id=""
-                      className="inputStyle"
-                      {...register("permanentAddress.palikaId")}
-                    >
-                      <option value={0} selected disabled>
-                        -- Select Palika --
-                      </option>
-                      {palika?.map((item: any, index: any) => {
-                        return (
-                          <option key={index} value={item.palikaId}>
-                            {item.palikaNameNep}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      वार्ड नं <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="inputStyle"
-                      placeholder="वार्ड नं"
-                      {...register("permanentAddress.ward")}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      टोल{" "}
-                    </label>
-                    <input
-                      type="text"
-                      className="inputStyle"
-                      placeholder="टोल "
-                      {...register("permanentAddress.tole")}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      घर नं
-                    </label>
-                    <input
-                      type="text"
-                      className="inputStyle"
-                      placeholder="घर नं"
-                      {...register("permanentAddress.houseNo")}
-                    />
-                  </div>
-                  <div className="flex gap-3 items-center">
-                    <label htmlFor="" className="labelText">
-                      एउटै ठेगाना ..?
-                    </label>
-                    <input
-                      type="checkbox"
-                      className="h-6 w-6"
-                      {...register("checked")}
-                      checked={watch("checked")}
-                    />
-                  </div>
-                </div>
-              </FormBorder>
               <FormBorder title="अस्थायी ठेगाना">
                 <div className="grid grid-cols-2 gap-3 px-3 py-2">
                   <div className="flex flex-col">
                     <label htmlFor="" className="labelText">
-                      परदेश <span className="text-red-600">*</span>
+                      प्रदेश <span className="text-red-600">*</span>
                     </label>
                     <select
                       id=""
@@ -689,67 +640,363 @@ export default function CreateApplicaton() {
                       {...register("temporaryAddress.houseNo")}
                     />
                   </div>
+                  <div className="flex gap-3 items-center">
+                    <label htmlFor="" className="labelText">
+                      एउटै ठेगाना ..?
+                    </label>
+                    <input
+                      type="checkbox"
+                      className="h-6 w-6"
+                      {...register("checked")}
+                      checked={watch("checked")}
+                    />
+                  </div>
+                </div>
+              </FormBorder>
+              <FormBorder title=" स्थाई ठेगाना">
+                <div className="grid grid-cols-2 gap-3 px-3 py-2">
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      प्रदेश <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id=""
+                      className="inputStyle"
+                      {...register("permanentAddress.stateId")}
+                    >
+                      <option value={0} selected disabled>
+                        -- Select State --
+                      </option>
+                      {states?.map((item: any, index: number) => {
+                        return (
+                          <option key={index} value={item.stateId}>
+                            {item.stateNameNep}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      जिल्ला <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id=""
+                      className="inputStyle"
+                      {...register("permanentAddress.districtId")}
+                    >
+                      <option value={0} selected disabled>
+                        -- Select District --
+                      </option>
+                      {district?.map((item: any, index: number) => {
+                        return (
+                          <option key={index} value={item.districtId}>
+                            {item.districtNameNep}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      पालिका <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id=""
+                      className="inputStyle"
+                      {...register("permanentAddress.palikaId")}
+                    >
+                      <option value={0} selected disabled>
+                        -- Select Palika --
+                      </option>
+                      {palika?.map((item: any, index: any) => {
+                        return (
+                          <option key={index} value={item.palikaId}>
+                            {item.palikaNameNep}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      वार्ड नं <span className="text-red-600">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="inputStyle"
+                      placeholder="वार्ड नं"
+                      {...register("permanentAddress.ward")}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      टोल{" "}
+                    </label>
+                    <input
+                      type="text"
+                      className="inputStyle"
+                      placeholder="टोल "
+                      {...register("permanentAddress.tole")}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      घर नं
+                    </label>
+                    <input
+                      type="text"
+                      className="inputStyle"
+                      placeholder="घर नं"
+                      {...register("permanentAddress.houseNo")}
+                    />
+                  </div>
                 </div>
               </FormBorder>
             </div>
           </FormBorder>
 
           {/* nominee  */}
-          <FormBorder title="Nominee">
+          <FormBorder title="हक्वालाको बिवरण">
             <div className="grid grid-cols-3 gap-3 px-3 py-2">
               <div className="flex flex-col">
-                <label className="labelText">नाम</label>
+                <label className="labelText">
+                  नाम <span className="text-red-600">*</span>
+                </label>
                 <input
                   type="text"
                   className="inputStyle"
-                  {...register("nominee.name")}
+                  {...register("nominee.name", {
+                    required: "Nominee name is required",
+                  })}
                   placeholder="नाम"
                 />
+                {errors?.nominee?.name && (
+                  <p className="text-red-600">
+                    {errors?.nominee?.name?.message}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col">
-                <label className="labelText">फोन नम्बर </label>
+                <label className="labelText">
+                  फोन नम्बर <span className="text-red-600">*</span>{" "}
+                </label>
                 <input
                   type="text"
                   className="inputStyle"
-                  {...register("nominee.contactNumber")}
+                  {...register("nominee.contactNumber", {
+                    required: "Nominee contact number is required",
+                  })}
                   placeholder="फोन नम्बर "
                 />
+                {errors?.nominee?.contactNumber && (
+                  <p className="text-red-600">
+                    {errors?.nominee?.contactNumber?.message}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col">
-                <label className="labelText"> इमेल</label>
+                <label className="labelText">
+                  {" "}
+                  इमेल <span className="text-red-600">*</span>
+                </label>
                 <input
                   type="text"
                   className="inputStyle"
-                  {...register("nominee.email")}
+                  {...register("nominee.email", {
+                    required: "Nominee email is required",
+                  })}
                   placeholder="इमेल "
                 />
+                {errors?.nominee?.email && (
+                  <p className="text-red-600">
+                    {errors?.nominee?.email?.message}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col">
-                <label className="labelText">सम्बन्ध </label>
+                <label className="labelText">
+                  नाता <span className="text-red-600">*</span>
+                </label>
                 <input
                   type="text"
                   className="inputStyle"
-                  {...register("nominee.relation")}
-                  placeholder="इमेल "
+                  {...register("nominee.relation", {
+                    required: "Relation with nominee is requied",
+                  })}
+                  placeholder="सम्बन्ध "
                 />
+                {errors?.nominee?.relation && (
+                  <p className="text-red-600">
+                    {errors?.nominee?.relation?.message}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col">
-                <label className="labelText">नागरिकता नं. </label>
+                <label className="labelText">
+                  नागरिकता नं. <span className="text-red-600">*</span>{" "}
+                </label>
                 <input
                   type="text"
                   className="inputStyle"
-                  {...register("nominee.citizenship")}
-                  placeholder="इमेल "
+                  {...register("nominee.citizenship", {
+                    required: "Citizenship number is required",
+                  })}
+                  placeholder="नागरिकता नं. "
                 />
+                {errors?.nominee?.citizenship && (
+                  <p className="text-red-600">
+                    {errors?.nominee?.citizenship?.message}
+                  </p>
+                )}
               </div>
             </div>
 
             <div className="grid grid-cols-2">
-              <FormBorder title="स्थाई ठेगाना">
+              <FormBorder title="अस्थाई ठेगाना">
                 <div className="grid grid-cols-2 gap-3 px-3 py-2">
                   <div className="flex flex-col">
                     <label htmlFor="" className="labelText">
-                      परदेश <span className="text-red-600">*</span>
+                      प्रदेश <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id=""
+                      className="inputStyle"
+                      {...register("nominee.temporaryAddress.stateId", {
+                        required: "Nominee state is required",
+                      })}
+                    >
+                      <option value={0} selected disabled>
+                        -- Select State --
+                      </option>
+                      {states?.map((item: any, index: number) => {
+                        return (
+                          <option key={index} value={item.stateId}>
+                            {item.stateNameNep}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {errors?.nominee?.temporaryAddress?.stateId && (
+                      <p className="text-red-600">
+                        {errors?.nominee?.temporaryAddress?.stateId?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      जिल्ला <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id=""
+                      className="inputStyle"
+                      {...register("nominee.temporaryAddress.districtId", {
+                        required: "District is required",
+                      })}
+                    >
+                      <option value={0} selected disabled>
+                        -- Select District --
+                      </option>
+                      {NomineeTempDistrict?.map((item: any, index: number) => {
+                        return (
+                          <option key={index} value={item.districtId}>
+                            {item.districtNameNep}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {errors?.nominee?.temporaryAddress?.districtId && (
+                      <p className="text-red-600">
+                        {errors?.nominee?.temporaryAddress?.districtId?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      पालिका <span className="text-red-600">*</span>
+                    </label>
+                    <select
+                      id=""
+                      className="inputStyle"
+                      {...register("nominee.temporaryAddress.palikaId", {
+                        required: "Palika is required",
+                      })}
+                    >
+                      <option value={0} selected disabled>
+                        -- Select Palika --
+                      </option>
+                      {NomineeTempPalika?.map((item: any, index: number) => {
+                        return (
+                          <option key={index} value={item.palikaId}>
+                            {item.palikaNameNep}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    {errors?.nominee?.temporaryAddress?.palikaId && (
+                      <p className="text-red-600">
+                        {errors?.nominee?.temporaryAddress?.palikaId?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      वार्ड नं <span className="text-red-600">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      className="inputStyle"
+                      placeholder="वार्ड नं"
+                      {...register("nominee.temporaryAddress.ward",{required:"Ward is required"})}
+                    />
+
+                    {errors?.nominee?.temporaryAddress?.ward && (
+                      <p className="text-red-600">
+                        {errors?.nominee?.temporaryAddress?.ward?.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      टोल{" "}
+                    </label>
+                    <input
+                      type="text"
+                      className="inputStyle"
+                      placeholder="टोल "
+                      {...register("nominee.temporaryAddress.tole")}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      घर नं
+                    </label>
+                    <input
+                      type="text"
+                      className="inputStyle"
+                      placeholder="घर नं"
+                      {...register("nominee.temporaryAddress.houseNo")}
+                    />
+                  </div>
+                  <div className="flex gap-3 items-center">
+                    <label htmlFor="" className="labelText">
+                      एउटै ठेगाना ..?
+                    </label>
+                    <input
+                      type="checkbox"
+                      className="h-6 w-6"
+                      {...register("checkedNominee")}
+                      checked={watch("checkedNominee")}
+                    />
+                  </div>
+                </div>
+              </FormBorder>
+              <FormBorder title="स्थायी ठेगाना">
+                <div className="grid grid-cols-2 gap-3 px-3 py-2">
+                  <div className="flex flex-col">
+                    <label htmlFor="" className="labelText">
+                      प्रदेश <span className="text-red-600">*</span>
                     </label>
                     <select
                       id=""
@@ -767,6 +1014,11 @@ export default function CreateApplicaton() {
                         );
                       })}
                     </select>
+                    {errors?.nominee?.permanentAddress?.stateId && (
+                      <p className="text-red-600">
+                        {errors?.nominee?.permanentAddress?.stateId?.message}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="" className="labelText">
@@ -788,6 +1040,11 @@ export default function CreateApplicaton() {
                         );
                       })}
                     </select>
+                    {errors?.nominee?.permanentAddress?.districtId && (
+                      <p className="text-red-600">
+                        {errors?.nominee?.permanentAddress?.districtId?.message}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="" className="labelText">
@@ -809,6 +1066,11 @@ export default function CreateApplicaton() {
                         );
                       })}
                     </select>
+                    {errors?.nominee?.permanentAddress?.palikaId && (
+                      <p className="text-red-600">
+                        {errors?.nominee?.permanentAddress?.palikaId?.message}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col">
                     <label htmlFor="" className="labelText">
@@ -843,117 +1105,6 @@ export default function CreateApplicaton() {
                       {...register("nominee.permanentAddress.houseNo")}
                     />
                   </div>
-                  <div className="flex gap-3 items-center">
-                    <label htmlFor="" className="labelText">
-                      एउटै ठेगाना ..?
-                    </label>
-                    <input
-                      type="checkbox"
-                      className="h-6 w-6"
-                      {...register("checked")}
-                      checked={watch("checked")}
-                    />
-                  </div>
-                </div>
-              </FormBorder>
-              <FormBorder title="अस्थायी ठेगाना">
-                <div className="grid grid-cols-2 gap-3 px-3 py-2">
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      परदेश <span className="text-red-600">*</span>
-                    </label>
-                    <select
-                      id=""
-                      className="inputStyle"
-                      {...register("nominee.temporaryAddress.stateId")}
-                    >
-                      <option value={0} selected disabled>
-                        -- Select State --
-                      </option>
-                      {states?.map((item: any, index: number) => {
-                        return (
-                          <option key={index} value={item.stateId}>
-                            {item.stateNameNep}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      जिल्ला <span className="text-red-600">*</span>
-                    </label>
-                    <select
-                      id=""
-                      className="inputStyle"
-                      {...register("nominee.temporaryAddress.districtId")}
-                    >
-                      <option value={0} selected disabled>
-                        -- Select District --
-                      </option>
-                      {NomineeTempDistrict?.map((item: any, index: number) => {
-                        return (
-                          <option key={index} value={item.districtId}>
-                            {item.districtNameNep}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      पालिका <span className="text-red-600">*</span>
-                    </label>
-                    <select
-                      id=""
-                      className="inputStyle"
-                      {...register("nominee.temporaryAddress.palikaId")}
-                    >
-                      <option value={0} selected disabled>
-                        -- Select Palika --
-                      </option>
-                      {NomineeTempPalika?.map((item: any, index: number) => {
-                        return (
-                          <option key={index} value={item.palikaId}>
-                            {item.palikaNameNep}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      वार्ड नं <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      className="inputStyle"
-                      placeholder="वार्ड नं"
-                      {...register("nominee.temporaryAddress.ward")}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      टोल{" "}
-                    </label>
-                    <input
-                      type="text"
-                      className="inputStyle"
-                      placeholder="टोल "
-                      {...register("nominee.temporaryAddress.tole")}
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <label htmlFor="" className="labelText">
-                      घर नं
-                    </label>
-                    <input
-                      type="text"
-                      className="inputStyle"
-                      placeholder="घर नं"
-                      {...register("nominee.temporaryAddress.houseNo")}
-                    />
-                  </div>
                 </div>
               </FormBorder>
             </div>
@@ -972,6 +1123,9 @@ export default function CreateApplicaton() {
                   })}
                   placeholder=" बैंक नाम"
                 />
+                {
+                  errors?.shareQuantity && <p className="text-red-600">{errors?.shareQuantity?.message}</p>
+                }
               </div>
               <div className="flex flex-col">
                 <label htmlFor="" className="labelText">
@@ -1002,8 +1156,22 @@ export default function CreateApplicaton() {
                   value={totalAmount}
                   placeholder="शेयर कुल रकम"
                 />
+                
               </div>
-              <div>
+
+              <div className="relative">
+                <div className="flex absolute items-center justify-end bottom-2 -right-40">
+                  <button
+                    className="flex items-center gap-3 bg-green-500 text-white font-semibold px-5 py-2 rounded-md shadow-md"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setShowQR(true);
+                    }}
+                  >
+                    <QrCodeIcon className="h-6 w-6" />
+                    Show QR
+                  </button>
+                </div>
                 <div className="flex flex-col">
                   <label htmlFor="" className="labelText">
                     Voucher / Payment Screenshot{" "}
@@ -1016,9 +1184,9 @@ export default function CreateApplicaton() {
                     placeholder="Voucher Image"
                     onChange={(e) => handleFileChaangeVoucher(e)}
                   />
-                  {errors?.citizenshipFrontImage && (
+                  {errors?.voucherImage && (
                     <p className="text-red-600">
-                      {errors?.citizenshipFrontImage?.message}
+                      {errors?.voucherImage?.message}
                     </p>
                   )}
                   {voucherImagePreview ? (

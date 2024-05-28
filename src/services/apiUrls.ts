@@ -92,6 +92,34 @@ export const apiUrls = {
       method: "GET",
       url: "/request/getDeclinedCount",
     },
+    getRequestByUser:{
+      method:"GET",
+      url:"/request/getRequestByUser"
+    },
+    getUserShareQuantity:{
+      method:"GET",
+      url:"/request/getShareQuantity"
+    },
+    getUserShareAmount:{
+      method:"GET",
+      url:"/request/getShareAmoutnByUser"
+    },
+    getUserShareRequest:{
+      method:"GET",
+      url:"/request/getUserShareRequest"
+    },
+    getUserPendingRequest:{
+      method:"GET",
+      url:"/request/getUserTotalPendingRequest"
+    },
+    getUserApprovedRequest:{
+      method:"GET",
+      url:"/request/getUserAcceptedRequest"
+    },
+    getUserDeclinedRequest:{
+      method:"GET",
+      url:"/request/getUserDeclinedRequest"
+    }
   },
   admin:{
     create:{
