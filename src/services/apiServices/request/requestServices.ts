@@ -98,3 +98,59 @@ export async function GetDeclinedCount(){
   )
   return response
 }
+
+export async function GetRequestByUserId(){
+  let response = await mainApi(
+    apiUrls.request.getRequestByUser.method,
+    apiUrls.request.getRequestByUser.url,
+  )
+  return response 
+}
+
+export async function GetUserShareQuantity(){
+  let response = await mainApi(
+    apiUrls.request.getUserShareQuantity.method,
+    apiUrls.request.getUserShareQuantity.url,
+  )
+  return response
+}
+
+export async function GetUserShareAmount(){
+  let response = await mainApi(
+    apiUrls.request.getUserShareAmount.method,
+    apiUrls.request.getUserShareAmount.url,
+  )
+  return response
+}
+
+export async function GetUserTotalShareRequest(){
+  let response = await mainApi(
+    apiUrls.request.getUserShareRequest.method,
+    apiUrls.request.getUserShareRequest.url,
+  )
+  return response
+}
+
+export async function GetUserApprovedRequest(){
+  let response = await mainApi(
+    apiUrls.request.getUserApprovedRequest.method,
+    apiUrls.request.getUserApprovedRequest.url,
+  )
+  return response
+}
+
+export async function GetUserDeclinedRequest(){
+  let response = await mainApi(
+    apiUrls.request.getUserDeclinedRequest.method,
+    apiUrls.request.getUserDeclinedRequest.url,
+  )
+  return response
+}
+
+export async function GetUserPendingRequest (){
+  let response = await mainApi(
+    apiUrls.request.getUserPendingRequest.method,
+    apiUrls.request.getUserPendingRequest.url,
+  )
+  return response
+}
