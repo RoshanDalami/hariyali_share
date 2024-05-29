@@ -2,8 +2,13 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 const Navbar = () => {
   const router = useRouter()
+  const handleLogoutFromAdmin = ()=>{
+      Cookies.remove('tokenAdmin');
+      router.push('/')
+  }
   return (
     <div className="flex fixed bg-white h-[88px] w-full  z-10 border-b border-gray-300 ">
       <div className="flex items-center ml-12 gap-4">
@@ -24,7 +29,7 @@ const Navbar = () => {
         <p className="text-green-600  text-2xl font-bold">
           <span className="text-black font-normal">Welcome!!</span> Super Admin
         </p>
-        <button className="bg-red-600 rounded-md shadow-md text-white px-3 py-2" onClick={()=>router.push('/')} >logout</button>
+        <button className="bg-red-600 rounded-md shadow-md text-white px-3 py-2" onClick={()=>handleLogoutFromAdmin()} >logout</button>
       </div>
     </div>
   );
