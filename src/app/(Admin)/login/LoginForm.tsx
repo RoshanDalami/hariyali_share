@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/Zod/resolver";
 import { useRouter } from "next/navigation";
 
-import {Login} from '@/services/apiServices/user/userServices';
+import { LoginAdmin } from '@/services/apiServices/admin/adminServices'
 import Cookies from "js-cookie";
 export default function LoginForm() {
   const router = useRouter()
@@ -22,10 +22,10 @@ export default function LoginForm() {
 
   const onSubmit = async (data: FieldValues) => {
     try {
-      const response = await Login(data);
+      const response = await LoginAdmin(data);
       console.log(response?.data?.accessToken,'response')
       if(response?.status === 200){
-        Cookies.set('token',response?.data?.accessToken);
+        Cookies.set('tokenAdmin',response?.data?.accessToken);
         router.push('/admin/dashboard')
       }
 

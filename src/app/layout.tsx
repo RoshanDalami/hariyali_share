@@ -1,14 +1,14 @@
-'use client'
+"use client";
 // import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const inter = Inter({ subsets: ["latin"] });
+// import NavBar from "./(public)/Components/NavBar";
 
-// export const metadata: Metadata = {
-//   title: "Hariyali Share",
-//   description: "",
-// };
+import dynamic from "next/dynamic";
+
+const NavBar = dynamic(()=> import('@/app/(public)/Components/NavBar'),{ssr:false})
 
 export default function RootLayout({
   children,
@@ -18,9 +18,11 @@ export default function RootLayout({
   const queryClient = new QueryClient();
   return (
     <html lang="en">
-      <QueryClientProvider client={queryClient}>
-        <body className={inter.className}>{children}</body>
-      </QueryClientProvider>
+      <body className={inter.className}>
+        <QueryClientProvider client={queryClient}>
+          {children}
+        </QueryClientProvider>
+      </body>
     </html>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import CircularProgress from "@mui/material/CircularProgress";
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import { ShareRequest } from "@/types/types";
 import Certificatee from "@/app/(Admin)/Components/Certificatee";
@@ -10,13 +10,18 @@ import {
   GetRequestById,
   AcceptRequest,
   DeclineRequest,
+  GenerateCertificate,
 } from "@/services/apiServices/request/requestServices";
 import FormBorder from "@/app/(public)/Components/FormBorder";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-
+import { useReactToPrint } from "react-to-print";
 export default function IndividualRequest() {
   const { id }: { id: string } = useParams();
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content:() => componentRef.current!,
+  })
   const router = useRouter();
   const getRequestById = async (id: string) => {
     const { data }: { data: ShareRequest } = await GetRequestById(id);
@@ -27,10 +32,16 @@ export default function IndividualRequest() {
     isError,
     isLoading,
   } = useQuery({
-    queryKey: ["Individual", id],
+    queryKey: ["Individual request", id],
     queryFn: () => getRequestById(id),
     enabled: !!id,
   });
+
+  const generateCertificate = async () => {
+    const response = await GenerateCertificate(id);
+    if (response?.status === 200) {
+    }
+  };
 
   if (isLoading)
     return (
@@ -39,23 +50,6 @@ export default function IndividualRequest() {
       </div>
     );
 
-  const handleConfirm = async () => {
-    const data = {
-      id: IndividualRequest?._id,
-      shareQuantity: IndividualRequest?.shareQuantity,
-    };
-    const response = await AcceptRequest(data);
-    if (response?.status === 200) {
-      router.push("/admin/newrequest");
-    }
-  };
-  const handleDecline = async () => {
-    const response = await DeclineRequest(id);
-    if (response?.status === 200) {
-      router.push("/admin/newrequest");
-    }
-  };
-
   return (
     <div className=" flex flex-col min-w-[80vw]  ">
       <div className="mb-6">
@@ -63,30 +57,63 @@ export default function IndividualRequest() {
           <></>
         ) : (
           <div className="my-4 flex justify-end mx-10">
-            <button className="bg-green-600 rounded-md shadow-md text-white px-4 py-2 font-bold">
+            <button
+              className="bg-green-600 rounded-md shadow-md text-white px-4 py-2 font-bold"
+              onClick={() => generateCertificate()}
+            >
               Generate Certificate
             </button>
           </div>
         )}
 
-        <FormBorder title="Personal Details">
+        <FormBorder title="व्यक्तिगत विवरण">
           <div className=" grid grid-cols-3 px-3 py-6">
             <p className="font-bold capitalize">
               Name : {IndividualRequest?.name}
             </p>
-            <p className="font-bold capitalize">
+            <p className="font-bold capitalize  my-2">
               Grandfather Name: {IndividualRequest?.grandFatherName}
             </p>
-            <p className="font-bold capitalize">
+            <p className="font-bold capitalize my-2">
               Father Name : {IndividualRequest?.fatherName}
             </p>
-            <p className="font-bold capitalize">
+            <p className="font-bold capitalize my-2">
               Mother Name : {IndividualRequest?.motherName}
             </p>
-            <p className="font-bold capitalize">
+            <p className="font-bold capitalize my-2">
               Spouse Name : {IndividualRequest?.spouseName}
             </p>
             <p className="font-bold ">Email : {IndividualRequest?.email}</p>
+            <div className="my-2 ">
+              <h1 className="font-bold py-2">Personal Image</h1>
+
+              <Image
+                src={IndividualRequest?.personalImage!}
+                alt=""
+                width={200}
+                height={200}
+                className="max-h-68"
+              />
+            </div>{" "}
+          </div>
+        </FormBorder>
+        <FormBorder title="हकवाला">
+          <div className=" grid grid-cols-3 px-3 py-6">
+            <p className="font-bold capitalize">
+              Name : {IndividualRequest?.nominee?.name}
+            </p>
+            <p className="font-bold capitalize  my-2">
+              Contact Number: {IndividualRequest?.nominee?.contactNumber}
+            </p>
+            <p className="font-bold capitalize my-2">
+              Email : {IndividualRequest?.nominee?.email}
+            </p>
+            <p className="font-bold capitalize my-2">
+              Citizenship Number : {IndividualRequest?.nominee?.citizenship}
+            </p>
+            <p className="font-bold capitalize my-2">
+              Relation : {IndividualRequest?.nominee?.relation}
+            </p>
           </div>
         </FormBorder>
 
@@ -142,25 +169,18 @@ export default function IndividualRequest() {
             <p className="text-lg font-bold">
               Citizenship No:<span> {IndividualRequest?.citizenshipNo}</span>
             </p>
+            <p className="text-lg font-bold">
+              National Identity Number:<span> {IndividualRequest?.nid}</span>
+            </p>
+
             <div>
-              <h1 className="font-bold">Citizenship Front Image</h1>
+              <h1 className="font-bold">Citizenship Image</h1>
               <Image
                 src={IndividualRequest?.citizenshipFrontImage!}
                 alt=""
                 width={200}
                 height={200}
                 className="max-h-68 "
-              />
-            </div>
-            <div>
-              <h1 className="font-bold">Citizenship Back Image</h1>
-
-              <Image
-                src={IndividualRequest?.citizenshipBackImage!}
-                alt=""
-                width={200}
-                height={200}
-                className="max-h-68"
               />
             </div>
           </div>
@@ -182,7 +202,15 @@ export default function IndividualRequest() {
             </p>
           </div>
         </FormBorder>
-        <Certificatee IndividualRequest={IndividualRequest!}/>
+        <div>
+          {
+            IndividualRequest?.shareCertificateNumber  ?
+        <div className="flex items-center justify-center mt-6 ny-4">
+          <Certificatee IndividualRequest={IndividualRequest!} />
+        </div>: <></>
+          }
+          
+        </div>
 
         {/* <div className="my-3  flex gap-4 justify-end mx-9">
           <button

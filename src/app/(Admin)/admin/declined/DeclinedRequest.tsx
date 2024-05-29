@@ -22,10 +22,8 @@ export default function DeclinedRequest() {
     queryFn: getDeclinedRequest,
   });
   // Ensure DeclinedRequest is always an array
-  const declinedRequestsArray = Array.isArray(DeclinedRequest)
-    ? DeclinedRequest
-    : [];
-  if (declinedRequestsArray?.length < 1) {
+ 
+  if (DeclinedRequest?.length < 1) {
     return (
       <div className=" min-w-[80vw] -mt-20 flex items-center justify-center h-screen">
         <div>
@@ -49,7 +47,7 @@ export default function DeclinedRequest() {
   }
   return (
     <div>
-      {declinedRequestsArray?.map((item: ShareRequest, index: number) => {
+      {DeclinedRequest?.map((item: ShareRequest, index: number) => {
         return (
           <TableContent
             key={index}

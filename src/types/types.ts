@@ -12,10 +12,20 @@ interface Address {
     childrenName: string;
     _id: string;
   }
+  interface Nominee {
+    name: string;
+    contactNumber: string;
+    email: string;
+    relation: string;
+    citizenship: string;
+    permanentAddress: Address;
+    temporaryAddress: Address;
+  }
   
   export interface ShareRequest {
     _id: string;
     name: string;
+    nid:string;
     grandFatherName: string;
     fatherName: string;
     motherName: string;
@@ -39,7 +49,9 @@ interface Address {
     date: string;
     shareCertificateNumber:string;
     remarks:string;
+    personalImage:string
     __v: number;
+    nominee:Nominee;
   }
   
 

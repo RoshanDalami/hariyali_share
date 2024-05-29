@@ -35,32 +35,34 @@ export default function Admin() {
     queryKey: ["new request count"],
     queryFn: getNewRequestCount,
   });
+ 
   const { data: Approved } = useQuery({
-    queryKey: ["approved request"],
+    queryKey: ["approved request count"],
     queryFn: getApprovedCount,
   });
   const {data:Declined} = useQuery({
-    queryKey:['declined'],
+    queryKey:['declined request count'],
     queryFn:getDeclined
   })
+
   const arr = [
     {
       title: "New Request",
-      number: 1,
+      number: NewRequest,
       icon: (
         <DocumentTextIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
       ),
     },
     {
       title: "Approved",
-      number: 1,
+      number: Approved,
       icon: (
         <ShieldCheckIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-green-600" />
       ),
     },
     {
       title: "Declined",
-      number: 2,
+      number: Declined,
       icon: (
         <ArchiveBoxXMarkIcon className="h-[50px] w-[50px] ml-16 mt-2 px-1 text-red-600" />
       ),
