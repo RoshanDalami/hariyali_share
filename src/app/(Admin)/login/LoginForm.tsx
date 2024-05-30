@@ -23,9 +23,9 @@ export default function LoginForm() {
   const onSubmit = async (data: FieldValues) => {
     try {
       const response = await LoginAdmin(data);
-      console.log(response?.data?.accessToken,'response')
+      console.log(response,'response')
       if(response?.status === 200){
-        Cookies.set('tokenAdmin',response?.data?.accessToken);
+        Cookies.set('token',response?.data?.accessToken);
         router.push('/admin/dashboard')
       }
 
@@ -105,3 +105,9 @@ export default function LoginForm() {
     </div>
   );
 }
+
+// ,{ 
+//   secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+//   sameSite: 'Strict', // Adjust as necessary: 'Strict', 'Lax', or 'None'
+//   path: '/', // Ensure the cookie is accessible from the entire site
+// }

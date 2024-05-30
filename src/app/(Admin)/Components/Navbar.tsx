@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 const Navbar = () => {
   const router = useRouter()
   const handleLogoutFromAdmin = ()=>{
-      Cookies.remove('tokenAdmin');
+      Cookies.remove('token');
       router.push('/')
   }
   return (

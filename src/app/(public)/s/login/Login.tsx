@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {Login} from '@/services/apiServices/user/userServices';
 import Cookies from "js-cookie";
+import { cookies } from "next/headers";
 export default function LoginFormUser() {
   const router = useRouter()
   const {
@@ -33,7 +34,7 @@ export default function LoginFormUser() {
       console.log(error)
     }
   };
-
+  console.log(Cookies.get('token'))
   return (
     <div className=" border border-gray-100 shadow-md  flex  rounded-md  px-10 py-12 ">
       <div className="flex items-center justify-center w-full ">
