@@ -13,7 +13,7 @@ import {
   GetApprovedCount,
   GetDeclinedCount,
 } from "@/services/apiServices/request/requestServices";
-
+import Cookies from "js-cookie";
 export default function Admin() {
   const getNewRequestCount = async () => {
     const { data } = await GetNewRequestCount();
@@ -70,9 +70,6 @@ export default function Admin() {
   ];
   return (
     <div className="flex  ">
-      {/* <Items />
-      <Items />
-      <Items /> */}
       {arr.map((item: any, index: number) => {
         return (
           <div className="h-[50px] w-full  " key={index}>
