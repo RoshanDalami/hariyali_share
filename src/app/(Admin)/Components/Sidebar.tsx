@@ -15,23 +15,23 @@ const Sidebar = () => {
   
   const arr = [
     {
-      title: "Fiscal Year ",
-      Link: "/admin/fiscalyear",
-      icon: (
-        <FolderOpenIcon
-          className={`h-6 w-6  ${
-            pathname === "/admin/fiscalyear" ? "text-white" : "text-indigo-600"
-          }  `}
-        />
-      ),
-    },
-    {
       title: "Dashboard",
       Link: "/admin/dashboard",
       icon: (
         <HomeIcon
           className={`h-6 w-6  ${
             pathname === "/admin/dashboard" ? "text-white" : "text-[#22c55e]"
+          }  `}
+        />
+      ),
+    },
+    {
+      title: "Fiscal Year ",
+      Link: "/admin/fiscalyear",
+      icon: (
+        <FolderOpenIcon
+          className={`h-6 w-6  ${
+            pathname === "/admin/fiscalyear" ? "text-white" : "text-indigo-600"
           }  `}
         />
       ),

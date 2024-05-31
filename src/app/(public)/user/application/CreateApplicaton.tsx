@@ -1,6 +1,6 @@
 "use client";
-import React, {useState, useEffect } from "react";
-import {useForm } from "react-hook-form";
+import React, { useState, useEffect, use } from "react";
+import { useForm, useWatch, useFormContext } from "react-hook-form";
 import FormBorder from "../../Components/FormBorder";
 import { PlusIcon, QrCodeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -10,7 +10,10 @@ import {
   GetState,
 } from "@/services/apiServices/office/officeServices";
 import { useQuery } from "@tanstack/react-query";
-import { CreateRequest } from "@/services/apiServices/request/requestServices";
+import {
+  CreateRequest,
+  GetDetailsWithNumber,
+} from "@/services/apiServices/request/requestServices";
 import BikramSambat, { ADToBS, BSToAD } from "bikram-sambat-js";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
@@ -18,12 +21,21 @@ const aa = new BikramSambat(new Date()).toBS();
 import { useRouter } from "next/navigation";
 import Modal from "../../Components/Modal";
 import modelImage from "../../../../../public/qr.jpeg";
+import { ShareRequest } from "@/types/types";
 
 export default function CreateApplicaton() {
   const router = useRouter();
   const [showQR, setShowQR] = useState(false);
 
   const [date, setDate] = useState(aa);
+  const [searchData, setSearchData] = useState({
+    certificateNumber: "",
+    contactNumber: "",
+  });
+  const [fillData, setFillData] = useState<any>({
+    
+  });
+  const [loading, setLoading] = useState(false);
   const {
     register,
     formState: { errors, isSubmitting },
@@ -217,58 +229,52 @@ export default function CreateApplicaton() {
   };
   const totalAmount = watch("shareQuantity") * watch("shareRate");
   const watchFields = watch();
-
+  const temporaryAddress = watch("temporaryAddress");
   useEffect(() => {
     if (watchFields?.checked === true) {
-      setValue(
-        "permanentAddress.stateId",
-        watchFields?.temporaryAddress?.stateId
-      );
-      setValue(
-        "permanentAddress.districtId",
-        watchFields?.temporaryAddress?.districtId
-      );
-      setValue(
-        "permanentAddress.palikaId",
-        watchFields?.temporaryAddress?.palikaId
-      );
-      setValue("permanentAddress.ward", watchFields?.temporaryAddress?.ward);
-      setValue("permanentAddress.tole", watchFields?.temporaryAddress?.tole);
-      setValue(
-        "permanentAddress.houseNo",
-        watchFields?.temporaryAddress?.houseNo
-      );
-    }
-  }, [watchFields, setValue]);
+      const { stateId, districtId, palikaId, ward, tole, houseNo } =
+        temporaryAddress || {};
 
+      setValue("permanentAddress.stateId", stateId);
+      setValue("permanentAddress.districtId", districtId);
+      setValue("permanentAddress.palikaId", palikaId);
+      setValue("permanentAddress.ward", ward);
+      setValue("permanentAddress.tole", tole);
+      setValue("permanentAddress.houseNo", houseNo);
+    }
+  }, [watchFields, setValue, temporaryAddress]);
+  const nomineeTemporaryAddress = watch("nominee.temporaryAddress");
   useEffect(() => {
     if (watchFields?.checkedNominee === true) {
       setValue(
         "nominee.permanentAddress.stateId",
-        watchFields?.nominee?.temporaryAddress?.stateId
+        nomineeTemporaryAddress?.stateId
       );
       setValue(
         "nominee.permanentAddress.districtId",
-        watchFields?.nominee?.temporaryAddress?.districtId
+        nomineeTemporaryAddress?.districtId
       );
       setValue(
         "nominee.permanentAddress.palikaId",
-        watchFields?.nominee?.temporaryAddress?.palikaId
+        nomineeTemporaryAddress?.palikaId
       );
-      setValue(
-        "nominee.permanentAddress.ward",
-        watchFields?.nominee?.temporaryAddress?.ward
-      );
-      setValue(
-        "nominee.permanentAddress.tole",
-        watchFields?.nominee?.temporaryAddress?.tole
-      );
+      setValue("nominee.permanentAddress.ward", nomineeTemporaryAddress?.ward);
+      setValue("nominee.permanentAddress.tole", nomineeTemporaryAddress?.tole);
       setValue(
         "nominee.permanentAddress.houseNo",
-        watchFields?.nominee?.temporaryAddress?.houseNo
+        nomineeTemporaryAddress?.houseNo
       );
     }
-  }, [setValue, watchFields]);
+  }, [
+    nomineeTemporaryAddress?.districtId,
+    nomineeTemporaryAddress?.houseNo,
+    nomineeTemporaryAddress?.palikaId,
+    nomineeTemporaryAddress?.stateId,
+    nomineeTemporaryAddress?.tole,
+    nomineeTemporaryAddress?.ward,
+    setValue,
+    watchFields,
+  ]);
 
   const onSubmit = async (data: any) => {
     const formData = new FormData();
@@ -300,6 +306,48 @@ export default function CreateApplicaton() {
     }
   };
 
+  const getFillDataHandler = async (e: any) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+
+      const response = await GetDetailsWithNumber(
+        searchData?.certificateNumber,
+        searchData?.contactNumber
+      );
+      if (response?.status === 200) {
+        setFillData(response?.data);
+        setLoading(false);
+      }
+      setSearchData({ contactNumber: "", certificateNumber: "" });
+    } catch (error) {
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    setValue("name", fillData?.name);
+    setValue("email", fillData?.email);
+    setValue("contactNumber", fillData?.contactNumber);
+    setValue("personalImage", fillData?.personalImage);
+    setPersonalImage(fillData?.personalImage);
+    setDate(fillData?.date);
+    setValue("grandFatherName", fillData?.grandFatherName);
+    setValue("fatherName", fillData?.fatherName);
+    setValue("motherName", fillData?.motherName);
+    setValue("spouseName", fillData?.spouseName);
+    setValue("citizenshipNo", fillData?.citizenshipNo);
+    setValue("nid", fillData?.nid);
+    setValue("citizenshipFrontImage", fillData?.citizenshipFrontImage);
+    setImagePreviewFront(fillData?.citizenshipFrontImage);
+    setValue("nominee.name", fillData?.nominee?.name);
+    setValue("nominee.email", fillData?.nominee?.email);
+    setValue("nominee.contactNumber", fillData?.nominee?.contactNumber);
+    setValue("nominee.citizenship", fillData?.nominee?.citizenship);
+    setValue("nominee.relation", fillData?.nominee?.relation);
+  }, [fillData, setValue]);
+
   return (
     <>
       {showQR && (
@@ -329,6 +377,56 @@ export default function CreateApplicaton() {
           className=""
           onSubmit={handleSubmit((data) => onSubmit(data))}
         >
+          <div>
+            <div className="flex  gap-3 justify-end">
+              <div className="flex flex-col">
+                <label htmlFor="" className="labelText">
+                  Share certificate number
+                </label>
+                <input
+                  type="text"
+                  className="inputStyle"
+                  placeholder="certificate number"
+                  onChange={(e) =>
+                    setSearchData({
+                      ...searchData,
+                      certificateNumber: e.target.value,
+                    })
+                  }
+                  value={searchData?.certificateNumber}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label htmlFor="" className="labelText">
+                  Contact Number
+                </label>
+                <input
+                  type="text"
+                  className="inputStyle"
+                  placeholder="contact number"
+                  onChange={(e) =>
+                    setSearchData({
+                      ...searchData,
+                      contactNumber: e.target.value,
+                    })
+                  }
+                  value={searchData?.contactNumber}
+                />
+              </div>
+              <button
+                className="bg-green-600 h-10 mt-10 text-white rounded-md shadow-md  px-3 py-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                onClick={(e) => getFillDataHandler(e)}
+                disabled={
+                  searchData?.certificateNumber == "" &&
+                  searchData?.contactNumber == ""
+                    ? true
+                    : false
+                }
+              >
+                {loading ? "searching" : "Fill Info."}
+              </button>
+            </div>
+          </div>
           <FormBorder title="व्यक्तिगत विवरण">
             <div className="grid md:grid-cols-2 gap-3 px-3 py-3">
               <div className="flex flex-col">
@@ -948,7 +1046,9 @@ export default function CreateApplicaton() {
                       type="text"
                       className="inputStyle"
                       placeholder="वार्ड नं"
-                      {...register("nominee.temporaryAddress.ward",{required:"Ward is required"})}
+                      {...register("nominee.temporaryAddress.ward", {
+                        required: "Ward is required",
+                      })}
                     />
 
                     {errors?.nominee?.temporaryAddress?.ward && (
@@ -1109,7 +1209,7 @@ export default function CreateApplicaton() {
               </FormBorder>
             </div>
           </FormBorder>
-          <FormBorder title="Share Details">
+          <FormBorder title="सहरे बिवरण ">
             <div className="px-4 py-2 grid grid-cols-3 gap-3">
               <div className="flex flex-col">
                 <label htmlFor="" className="labelText">
@@ -1123,9 +1223,11 @@ export default function CreateApplicaton() {
                   })}
                   placeholder=" बैंक नाम"
                 />
-                {
-                  errors?.shareQuantity && <p className="text-red-600">{errors?.shareQuantity?.message}</p>
-                }
+                {errors?.shareQuantity && (
+                  <p className="text-red-600">
+                    {errors?.shareQuantity?.message}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col">
                 <label htmlFor="" className="labelText">
@@ -1156,7 +1258,6 @@ export default function CreateApplicaton() {
                   value={totalAmount}
                   placeholder="शेयर कुल रकम"
                 />
-                
               </div>
 
               <div className="relative">
@@ -1174,7 +1275,7 @@ export default function CreateApplicaton() {
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="" className="labelText">
-                    Voucher / Payment Screenshot{" "}
+                    वोउचेर / पय्मेंट स्क्रीन्शोत{" "}
                     <span className="text-red-600">*</span>
                   </label>
                   <input

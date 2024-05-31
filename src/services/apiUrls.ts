@@ -119,6 +119,10 @@ export const apiUrls = {
     getUserDeclinedRequest:{
       method:"GET",
       url:"/request/getUserDeclinedRequest"
+    },
+    getDetailsWithNumber:{
+      method:"GET",
+      url:"/request/getDetailsWithNumber"
     }
   },
   admin:{

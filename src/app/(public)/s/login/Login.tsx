@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { FieldValue, FieldValues, useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import Image from "next/image";
 import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +9,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {Login} from '@/services/apiServices/user/userServices';
 import Cookies from "js-cookie";
-import { cookies } from "next/headers";
+import toast from "react-hot-toast";
+
 export default function LoginFormUser() {
   const router = useRouter()
   const {
@@ -17,24 +18,25 @@ export default function LoginFormUser() {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm({
-    resolver: zodResolver(loginSchema),
+    // resolver: zodResolver(loginSchema),
   });
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data: FieldValues) => {
     try {
       const response = await Login(data);
-      console.log(response?.data?.accessToken,'response')
       if(response?.status === 200){
         Cookies.set('token',response?.data?.accessToken);
+        toast.success('Login Successfull')
         router.push('/user')
       }
 
     } catch (error) {
+      toast.error("Invalid credentials")
       console.log(error)
     }
   };
-  console.log(Cookies.get('token'))
+
   return (
     <div className=" border border-gray-100 shadow-md  flex  rounded-md  px-10 py-12 ">
       <div className="flex items-center justify-center w-full ">

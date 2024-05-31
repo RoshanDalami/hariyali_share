@@ -52,6 +52,8 @@ interface Address {
     personalImage:string
     __v: number;
     nominee:Nominee;
+    voucherImage:''
+    
   }
   
 

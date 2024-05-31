@@ -6,7 +6,7 @@ import { EyeSlashIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/Zod/resolver";
 import { useRouter } from "next/navigation";
-
+import toast from "react-hot-toast";
 import { LoginAdmin } from '@/services/apiServices/admin/adminServices'
 import Cookies from "js-cookie";
 export default function LoginForm() {
@@ -26,10 +26,12 @@ export default function LoginForm() {
       console.log(response,'response')
       if(response?.status === 200){
         Cookies.set('token',response?.data?.accessToken);
+        toast.success('Login successfull')
         router.push('/admin/dashboard')
       }
 
     } catch (error) {
+      toast.error('Invalid credentials')
       console.log(error)
     }
   };
