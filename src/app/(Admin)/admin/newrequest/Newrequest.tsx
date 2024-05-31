@@ -4,6 +4,7 @@ import TableContent from "../../Components/TableContent";
 import { useQuery } from "@tanstack/react-query";
 import { GetRequest } from "@/services/apiServices/request/requestServices";
 import { ShareRequest } from "@/types/types";
+
 import Image from "next/image";
 import note from '../../../../../public/note.svg'
 import CircularProgress from "@mui/material/CircularProgress";
@@ -46,6 +47,37 @@ const NewRequest = () => {
     }
   return (
     <div className="">
+
+        <table className="w-full border-collapse">
+          <tr>
+            <th className="border border-black px-3 py-4">S.N</th>
+            <th className="border border-black px-3 py-4">Applicant Name</th>
+            <th className="border border-black px-3 py-4">Applicant Father Name</th>
+            <th className="border border-black px-3 py-4">Applied Date</th>
+            <th className="border border-black px-3 py-4">Action</th>
+          </tr>
+          {
+            shareRequestList?.map((item:ShareRequest,index:number)=>{
+              return(
+                <tr key={index}>
+
+                  <th className="border border-black px-3 py-4">{index + 1}</th>
+                  <th className="border border-black px-3 py-4">{item.name}</th>
+                  <th className="border border-black px-3 py-4">{item.fatherName}</th>
+                  <th className="border border-black px-3 py-4">{item.date}</th>
+                  <th className="border border-black px-3 py-4">
+                    <div>
+                      <button>
+                        
+                      </button>
+                    </div>
+                    </th>
+
+                </tr>
+              )
+            })
+          }
+        </table>
       {shareRequestList?.map((item: ShareRequest, index: number) => {
         return (
           <TableContent

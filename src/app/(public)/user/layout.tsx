@@ -4,7 +4,7 @@ import "../../globals.css";
 import Sidebar from "./Components/Sidebar";
 import Navbar from "./Components/Navbar";
 const inter = Inter({ subsets: ["latin"] });
-
+import {Toaster} from 'react-hot-toast'
 export const metadata: Metadata = {
   title: "Hariyali Share Platform",
   description: "",
@@ -18,9 +18,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        
         <Navbar />
         <div className="flex">
           <Sidebar />
+          <Toaster position="top-right" />
+
           <div className="ml-[20%] mt-20 ">{children}</div>
         </div>
       </body>

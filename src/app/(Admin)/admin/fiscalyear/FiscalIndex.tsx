@@ -1,43 +1,50 @@
 "use client";
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
-import { GetFiscal } from "@/services/apiServices/office/officeServices";
+import {
+  GetFiscal,
+  UpdateStatus,
+} from "@/services/apiServices/office/officeServices";
 import { FiscalYear } from "@/types/types";
 import Switch from "@mui/material/Switch";
 import { CircularProgress } from "@mui/material";
 import Image from "next/image";
 const label = { inputProps: { "aria-label": "Switch demo" } };
 import TableBorder from "@/app/(public)/Components/TableBorder";
-import addFiscal from '../../../../../public/addFiscal.svg'
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import addFiscal from "../../../../../public/addFiscal.svg";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Error from "../../Components/Error";
+import { useRouter } from "next/navigation";
 export default function FiscalIndex() {
   const getFiscal = async () => {
     const { data } = await GetFiscal();
     return data;
   };
+  const router = useRouter()
   const {
     data: FiscalYearList,
     isError,
     isLoading,
+    refetch
   } = useQuery({
     queryKey: ["Fiscal"],
     queryFn: getFiscal,
   });
 
-  if(FiscalYearList?.length < 1){
+  if (FiscalYearList?.length < 1) {
     return (
       <div className="flex h-screen w-[80vw] border items-center -mt-20 justify-center">
-        <div  className="flex flex-col items-center">
-
-        <Image src={addFiscal} alt="" width={400} height={400}/>
-        <Link href={'/admin/fiscalyear/createfiscal'} >
-        <button className="bg-green-600 text-white px-10 py-3 rounded-md shadow-md">Create Fiscal Year</button>
-        </Link>
+        <div className="flex flex-col items-center">
+          <Image src={addFiscal} alt="" width={400} height={400} />
+          <Link href={"/admin/fiscalyear/createfiscal"}>
+            <button className="bg-green-600 text-white px-10 py-3 rounded-md shadow-md">
+              Create Fiscal Year
+            </button>
+          </Link>
         </div>
       </div>
-    )
+    );
   }
 
   if (isLoading)
@@ -47,11 +54,9 @@ export default function FiscalIndex() {
       </div>
     );
 
-    if(isError) {
-      return (
-       <Error/>
-      )
-    }
+  if (isError) {
+    return <Error />;
+  }
 
   return (
     <TableBorder
@@ -82,21 +87,31 @@ export default function FiscalIndex() {
             return (
               <tr key={index}>
                 <td className="px-3 py-2 border border-black">{index + 1}</td>
-                <td className="px-3 py-2 border border-black">{item.fiscalYear}</td>
+                <td className="px-3 py-2 border border-black">
+                  {item.fiscalYear}
+                </td>
                 <>
                   {item.status ? (
-                    <td className="text-green-600 font-bold px-3 py-2 border border-black">Active</td>
+                    <td className="text-green-600 font-bold px-3 py-2 border border-black">
+                      Active
+                    </td>
                   ) : (
-                    <td className="text-red-600 font-bold px-3 py-2 border border-black">Deactive</td>
+                    <td className="text-red-600 font-bold px-3 py-2 border border-black">
+                      Deactive
+                    </td>
                   )}
                 </>
                 <td className="px-3 py-2 border border-black">
-                  <Switch {...label} checked={item?.status } />
+                  <Switch {...label} checked={item?.status} onChange={async()=>{
+                   const response = await UpdateStatus(item._id)
+                   if(response?.status === 200){
+                    refetch()
+                   }
+                  }} />
                 </td>
                 <td className="px-3 py-2 border border-black flex items-center">
-                  <div className="bg-green-600 px-3 py-2 text-white rounded-md">
-
-                  <PencilSquareIcon className="h-6 w-6 " />
+                  <div className="bg-green-600 px-3 py-2 text-white rounded-md cursor-pointer" onClick={()=>router.push(`/admin/fiscalyear/createfiscal/${item._id}`)}>
+                    <PencilSquareIcon className="h-6 w-6 "  />
                   </div>
                 </td>
               </tr>

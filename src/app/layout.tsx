@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const inter = Inter({ subsets: ["latin"] });
+import {Toaster} from 'react-hot-toast'
 // import NavBar from "./(public)/Components/NavBar";
 
 import dynamic from "next/dynamic";
@@ -20,6 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <QueryClientProvider client={queryClient}>
+
+         <Toaster position="top-right" />
           {children}
         </QueryClientProvider>
       </body>

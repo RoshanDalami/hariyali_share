@@ -3,7 +3,7 @@ import CreateFiscalComp from './CreateFiscal'
 export default function CreateFiscalPage() {
   return (
     <div>
-      <CreateFiscalComp/>
+      <CreateFiscalComp   />
     </div>
   )
 }

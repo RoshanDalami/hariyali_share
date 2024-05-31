@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import FormBorder from "@/app/(public)/Components/FormBorder";
 import { FieldValue, FieldValues, useForm } from "react-hook-form";
 import { NepaliDatePicker } from "nepali-datepicker-reactjs";
@@ -7,7 +7,8 @@ import BikramSambat from "bikram-sambat-js";
 import "nepali-datepicker-reactjs/dist/index.css";
 import { useRouter } from "next/navigation";
 import { CreateFiscal } from "@/services/apiServices/office/officeServices";
-export default function CreateFiscalComp() {
+import { FiscalYear } from "@/types/types";
+export default function CreateFiscalComp({clickedDataId}:{clickedDataId?:FiscalYear}) {
   const aa = new BikramSambat(new Date()).toBS();
   const [startDate, setStartDate] = useState(aa);
   const [endDate, setEndDate] = useState(aa);
@@ -15,6 +16,7 @@ export default function CreateFiscalComp() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm();
   const router = useRouter()
@@ -29,7 +31,18 @@ export default function CreateFiscalComp() {
     router.push('/admin/fiscalyear')
    }
   };
-  console.log(watch('status'))
+  useEffect(()=>{
+    if(clickedDataId){
+      setValue('_id',clickedDataId?._id)
+      setValue('fiscalYear',clickedDataId?.fiscalYear);
+      setValue('startYear',clickedDataId?.startYear)
+      setValue('endYear',clickedDataId?.endYear)
+      setStartDate(clickedDataId?.startDate);
+      setEndDate(clickedDataId?.endDate);
+      setValue('status',clickedDataId?.status)
+
+    }
+  },[clickedDataId,setValue])
   return (
     <div>
       <FormBorder title="Create Fiscal Year">

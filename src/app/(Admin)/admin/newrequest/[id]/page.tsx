@@ -15,6 +15,8 @@ import FormBorder from "@/app/(public)/Components/FormBorder";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Model from "@/app/(Admin)/Components/Model";
+import BikramSambat, { ADToBS, BSToAD } from "bikram-sambat-js";
+const aa = new BikramSambat(new Date()).toBS();
 export default function IndividualRequest() {
     const [modelOpen,setModelOpen] = useState(false)
   const { id }: { id: string } = useParams();
@@ -45,6 +47,7 @@ export default function IndividualRequest() {
     const data = {
       id: IndividualRequest?._id,
       shareQuantity: IndividualRequest?.shareQuantity,
+      shareApprovedDate:aa
     };
     const response = await AcceptRequest(data);
     if (response?.status === 200) {
@@ -164,8 +167,12 @@ export default function IndividualRequest() {
               <p className="text-lg font-bold">
                 Citizenship No:<span> {IndividualRequest?.citizenshipNo}</span>
               </p>
+              <p className="text-lg font-bold">
+                National Identity :<span> {IndividualRequest?.nid}</span>
+              </p>
+
               <div>
-                <h1 className="font-bold">Citizenship Front Image</h1>
+                <h1 className="font-bold">Citizenship  Image</h1>
                 <Image
                   src={IndividualRequest?.citizenshipFrontImage!}
                   alt=""
@@ -174,17 +181,7 @@ export default function IndividualRequest() {
                   className="max-h-68 "
                 />
               </div>
-              <div>
-                <h1 className="font-bold">Citizenship Back Image</h1>
-
-                <Image
-                  src={IndividualRequest?.citizenshipBackImage!}
-                  alt=""
-                  width={200}
-                  height={200}
-                  className="max-h-68"
-                />
-              </div>
+              
             </div>
           </FormBorder>
           <FormBorder title="Share Details">

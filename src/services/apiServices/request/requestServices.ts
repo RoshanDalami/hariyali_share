@@ -154,3 +154,11 @@ export async function GetUserPendingRequest (){
   )
   return response
 }
+
+export async function GetDetailsWithNumber(certificateNumber:string,contactNumber:string){
+  let response = await mainApi(
+    apiUrls?.request?.getDetailsWithNumber.method,
+    apiUrls?.request?.getDetailsWithNumber.url+`?certificateNumber=${certificateNumber}&contactNumber=${contactNumber}`,
+  )
+  return response
+}

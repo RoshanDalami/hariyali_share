@@ -116,54 +116,6 @@ export default function IndividualRequest() {
             </p>
           </div>
         </FormBorder>
-
-        {/* <div className="grid grid-cols-2">
-          <FormBorder title="Pernament Address">
-            <div className="px-3 py-5">
-              <h1 className="font-bold capitalize">
-                State : {IndividualRequest?.permanentAddress?.stateId}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                District : {IndividualRequest?.permanentAddress?.districtId}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                Palika : {IndividualRequest?.permanentAddress?.palikaId}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                Ward : {IndividualRequest?.permanentAddress?.ward}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                Tole : {IndividualRequest?.permanentAddress?.tole}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                House No : {IndividualRequest?.permanentAddress?.houseNo}{" "}
-              </h1>
-            </div>
-          </FormBorder>
-          <FormBorder title="Temp Address">
-            <div className="px-3 py-5">
-              <h1 className="font-bold capitalize">
-                State : {IndividualRequest?.temporaryAddress?.stateId}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                District : {IndividualRequest?.temporaryAddress?.districtId}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                Palika : {IndividualRequest?.temporaryAddress?.palikaId}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                Ward : {IndividualRequest?.temporaryAddress?.ward}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                Tole : {IndividualRequest?.temporaryAddress?.tole}{" "}
-              </h1>
-              <h1 className="font-bold capitalize">
-                House No : {IndividualRequest?.temporaryAddress?.houseNo}{" "}
-              </h1>
-            </div>
-          </FormBorder>
-        </div> */}
-
         <FormBorder title="Citizenship Details">
           <div className="px-3 py-4 flex justify-between ">
             <p className="text-lg font-bold">
@@ -211,21 +163,6 @@ export default function IndividualRequest() {
           }
           
         </div>
-
-        {/* <div className="my-3  flex gap-4 justify-end mx-9">
-          <button
-            className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md"
-            onClick={() => handleDecline()}
-          >
-            Decline
-          </button>   
-          <button
-            className="bg-green-600 text-white px-6 py-2 rounded-md shadow-md"
-            onClick={() => handleConfirm()}
-          >
-            Accept
-          </button>
-        </div> */}
       </div>
     </div>
   );

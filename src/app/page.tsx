@@ -9,7 +9,9 @@ export default function Home() {
   return (
     <main className="">
       <NavBar/>
-    
+    <div className="flex h-screen w-full justify-center items-center ">
+      <h1 className="text-[100px] font-bold  text-green-400">Hariyali Share </h1>
+    </div>
     </main>
   );
 }

@@ -9,6 +9,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {Register} from '@/services/apiServices/user/userServices';
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
+
 export default function RegisterUser() {
   const router = useRouter()
   const {
@@ -26,14 +28,17 @@ export default function RegisterUser() {
    try {
         const response = await Register(data);
         if(response?.status === 200){
+          toast.success('User registered successfully')
             router.push('/s/login')
         }
    } catch (error) {
-    
+      toast.error('User registered failed')
    }
   };
 
   return (
+    <>
+      
     <div className=" border border-gray-100 shadow-lg shadow-green-200  flex  rounded-md  px-10 py-12 ">
       
       <div className="w-full">
@@ -150,5 +155,6 @@ export default function RegisterUser() {
         </form>
       </div>
     </div>
+    </>
   );
 }

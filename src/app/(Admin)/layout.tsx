@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 const inter = Inter({ subsets: ["latin"] });
+import { Toaster } from "react-hot-toast";
 
 // export const metadata: Metadata = {
 //   title: "Hariyali Share",
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <QueryClientProvider client={queryClient}>
+        <Toaster position="top-right" />
         <body className={inter.className}>{children}</body>
       </QueryClientProvider>
     </html>
