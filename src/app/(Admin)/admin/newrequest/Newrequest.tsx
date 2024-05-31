@@ -48,7 +48,7 @@ const NewRequest = () => {
   return (
     <div className="">
 
-        <table className="w-full border-collapse">
+        {/* <table className="w-full border-collapse">
           <tr>
             <th className="border border-black px-3 py-4">S.N</th>
             <th className="border border-black px-3 py-4">Applicant Name</th>
@@ -77,7 +77,7 @@ const NewRequest = () => {
               )
             })
           }
-        </table>
+        </table> */}
       {shareRequestList?.map((item: ShareRequest, index: number) => {
         return (
           <TableContent
