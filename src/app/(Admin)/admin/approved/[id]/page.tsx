@@ -31,6 +31,7 @@ export default function IndividualRequest() {
     data: IndividualRequest,
     isError,
     isLoading,
+    refetch
   } = useQuery({
     queryKey: ["Individual request", id],
     queryFn: () => getRequestById(id),
@@ -40,6 +41,7 @@ export default function IndividualRequest() {
   const generateCertificate = async () => {
     const response = await GenerateCertificate(id);
     if (response?.status === 200) {
+      refetch()
     }
   };
 
@@ -151,6 +153,10 @@ export default function IndividualRequest() {
             <p className="font-bold">
               {" "}
               Share Applied Date : {IndividualRequest?.date}
+            </p>
+            <p className="font-bold">
+              {" "}
+              Share Approved Date : {IndividualRequest?.shareApprovedDate}
             </p>
           </div>
         </FormBorder>

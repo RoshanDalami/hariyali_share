@@ -33,7 +33,6 @@ interface Address {
     children: Child[];
     citizenshipNo: string;
     citizenshipFrontImage: string;
-    citizenshipBackImage: string;
     email: string;
     contactNumber: string;
     shareRate: number;
@@ -52,8 +51,18 @@ interface Address {
     personalImage:string
     __v: number;
     nominee:Nominee;
-    voucherImage:''
-    
+    voucherImage:'',
+    dateOfBirth:'',
+    pernamentStateName: string,
+    tempStateName: string,
+    pernamentDistrictName: string,
+    tempDistrictName: string,
+    pernamentPalikaName: string,
+    tempPalikaName: string,
+    nomineeTepmStateName: string,
+    nomineeTempDistrictName: string,
+    nomineeTempPalikaName: string
+    shareApprovedDate:string
   }
   
 

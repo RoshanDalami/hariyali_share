@@ -19,6 +19,8 @@ import BikramSambat, { ADToBS, BSToAD } from "bikram-sambat-js";
 const aa = new BikramSambat(new Date()).toBS();
 export default function IndividualRequest() {
     const [modelOpen,setModelOpen] = useState(false)
+    const [loading,setLoading] = useState(false)
+    const [declineLoading,setDeclineLoading] = useState(false)
   const { id }: { id: string } = useParams();
   const router = useRouter();
   const getRequestById = async (id: string) => {
@@ -49,9 +51,12 @@ export default function IndividualRequest() {
       shareQuantity: IndividualRequest?.shareQuantity,
       shareApprovedDate:aa
     };
+    setLoading(true)
     const response = await AcceptRequest(data);
+
     if (response?.status === 200) {
-      router.push("/admin/newrequest");
+      setLoading(false)
+      router.push("/admin/approved");
     }
   };
   const handleDecline = async () => {
@@ -59,9 +64,11 @@ export default function IndividualRequest() {
         id:id,
         remarks:remarks
     }
+    setDeclineLoading(true)
     const response = await DeclineRequest(data);
     if (response?.status === 200) {
-      router.push("/admin/newrequest");
+      setDeclineLoading(false)
+      router.push("/admin/declined");
     }
   };
 
@@ -81,10 +88,11 @@ export default function IndividualRequest() {
                 Cancel
               </button>
               <button
-                className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md"
+                className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed"
                 onClick={() => handleDecline()}
+                
               >
-                Decline
+                {declineLoading ? ' Declining ...':'Decline'}
               </button>
 
               </div>
@@ -119,13 +127,13 @@ export default function IndividualRequest() {
             <FormBorder title="Pernament Address">
               <div className="px-3 py-5">
                 <h1 className="font-bold capitalize">
-                  State : {IndividualRequest?.permanentAddress?.stateId}{" "}
+                  State : {IndividualRequest?.pernamentStateName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  District : {IndividualRequest?.permanentAddress?.districtId}{" "}
+                  District : {IndividualRequest?.pernamentDistrictName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Palika : {IndividualRequest?.permanentAddress?.palikaId}{" "}
+                  Palika : {IndividualRequest?.pernamentPalikaName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
                   Ward : {IndividualRequest?.permanentAddress?.ward}{" "}
@@ -141,13 +149,13 @@ export default function IndividualRequest() {
             <FormBorder title="Temp Address">
               <div className="px-3 py-5">
                 <h1 className="font-bold capitalize">
-                  State : {IndividualRequest?.temporaryAddress?.stateId}{" "}
+                  State : {IndividualRequest?.tempStateName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  District : {IndividualRequest?.temporaryAddress?.districtId}{" "}
+                  District : {IndividualRequest?.tempDistrictName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Palika : {IndividualRequest?.temporaryAddress?.palikaId}{" "}
+                  Palika : {IndividualRequest?.tempPalikaName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
                   Ward : {IndividualRequest?.temporaryAddress?.ward}{" "}
@@ -203,16 +211,18 @@ export default function IndividualRequest() {
           </FormBorder>
           <div className="my-3  flex gap-4 justify-end mx-9">
             <button
-              className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md"
+              className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed"
               onClick={()=>setModelOpen(true)}
+              disabled={declineLoading}
             >
-              Decline
+              {declineLoading ? ' Declining ...':'Decline'}
             </button>
             <button
-              className="bg-green-600 text-white px-6 py-2 rounded-md shadow-md"
+              className="bg-green-600 text-white px-6 py-2 rounded-md shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed"
               onClick={() => handleConfirm()}
+              disabled={loading}
             >
-              Accept
+              {loading ? "Accepting...":'Accept'}
             </button>
           </div>
         </div>

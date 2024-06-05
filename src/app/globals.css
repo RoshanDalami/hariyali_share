@@ -16,3 +16,33 @@
         @apply text-xl my-1
     }
   }
+
+
+  .text-on-hover {
+    visibility: hidden;
+    width: auto;
+    background-color: green;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: -250%; /* Position the text above the icon */
+    left: 50%;
+    transform: translateX(-50%);
+    /* convert multiple line in single line */
+    white-space: nowrap;
+  }
+
+  .icon-container {
+    position: relative;
+    /* display: inline-block; */
+    cursor: pointer;
+  }
+
+  .icon-container:hover .text-on-hover {
+    visibility: visible;
+  }
+  
+  

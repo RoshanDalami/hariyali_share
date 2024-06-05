@@ -132,6 +132,9 @@ export default function IndividualRequest() {
             <p className="text-lg font-bold">
               Citizenship No:<span> {IndividualRequest?.citizenshipNo}</span>
             </p>
+            <p className="text-lg font-bold">
+              National Identity Number :<span> {IndividualRequest?.nid}</span>
+            </p>
             <div>
               <h1 className="font-bold">Citizenship Front Image</h1>
               <Image
@@ -140,17 +143,6 @@ export default function IndividualRequest() {
                 width={200}
                 height={200}
                 className="max-h-68 "
-              />
-            </div>
-            <div>
-              <h1 className="font-bold">Citizenship Back Image</h1>
-
-              <Image
-                src={IndividualRequest?.citizenshipBackImage!}
-                alt=""
-                width={200}
-                height={200}
-                className="max-h-68"
               />
             </div>
           </div>

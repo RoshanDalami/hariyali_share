@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
 import { useForm, useWatch, useFormContext } from "react-hook-form";
-import FormBorder from "../../Components/FormBorder";
+import FormBorder from "@/app/(public)/Components/FormBorder";
 import { PlusIcon, QrCodeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import {
@@ -19,15 +19,11 @@ import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 const aa = new BikramSambat(new Date()).toBS();
 import { useRouter } from "next/navigation";
-import Modal from "../../Components/Modal";
-import modelImage from "../../../../../public/qr.jpeg";
+import Modal from "@/app/(public)/Components/Modal";
+import modelImage from "../../../../../../public/qr.jpeg";
 import { ShareRequest } from "@/types/types";
 
-export default function CreateApplicaton({
-  clickedDataId,
-}: {
-  clickedDataId?: ShareRequest;
-}) {
+const CreateApplicatonByAdmin = () => {
   const router = useRouter();
   const [showQR, setShowQR] = useState(false);
 
@@ -296,7 +292,7 @@ export default function CreateApplicaton({
     formData.set("dateofBirth", date);
     const response = await CreateRequest(formData);
     if (response?.status === 200) {
-      router.push("/user");
+      router.push("/admin/dashboard");
     }
   };
 
@@ -346,125 +342,6 @@ export default function CreateApplicaton({
     setValue("nominee.citizenship", fillData?.nominee?.citizenship);
     setValue("nominee.relation", fillData?.nominee?.relation);
   }, [fillData, setValue]);
-
-  useEffect(() => {
-    if (clickedDataId) {
-      setValue("_id", clickedDataId?._id);
-      setValue("name", clickedDataId?.name);
-      setValue("grandFatherName", clickedDataId?.grandFatherName);
-      setValue("fatherName", clickedDataId?.fatherName);
-      setValue("motherName", clickedDataId?.motherName);
-      setValue("spouseName", clickedDataId?.spouseName);
-      setValue("email", clickedDataId?.email);
-      setDate(clickedDataId?.dateOfBirth);
-      setValue("personalImage", clickedDataId?.personalImage);
-      setPersonalImage(clickedDataId?.personalImage);
-      setValue("contactNumber", clickedDataId?.contactNumber);
-      setValue("citizenshipNo", clickedDataId?.citizenshipNo);
-      setValue("nid", clickedDataId?.nid);
-      setValue("citizenshipFrontImage", clickedDataId?.citizenshipFrontImage);
-      setImagePreviewFront(clickedDataId?.citizenshipFrontImage);
-      setValue(
-        "permanentAddress.stateId",
-        clickedDataId?.permanentAddress?.stateId
-      );
-      setValue(
-        "permanentAddress.districtId",
-        clickedDataId?.permanentAddress?.districtId
-      );
-      setValue(
-        "permanentAddress.palikaId",
-        clickedDataId?.permanentAddress?.palikaId
-      );
-      setValue("permanentAddress.ward", clickedDataId?.permanentAddress?.ward);
-      setValue("permanentAddress.tole", clickedDataId?.permanentAddress?.tole);
-      setValue(
-        "permanentAddress.houseNo",
-        clickedDataId?.permanentAddress?.houseNo
-      );
-      setValue(
-        "temporaryAddress.stateId",
-        clickedDataId?.temporaryAddress?.stateId
-      );
-      setValue(
-        "temporaryAddress.districtId",
-        clickedDataId?.temporaryAddress?.districtId
-      );
-      setValue(
-        "temporaryAddress.palikaId",
-        clickedDataId?.temporaryAddress?.palikaId
-      );
-      setValue("temporaryAddress.ward", clickedDataId?.temporaryAddress?.ward);
-      setValue("temporaryAddress.tole", clickedDataId?.temporaryAddress?.tole);
-      setValue(
-        "temporaryAddress.houseNo",
-        clickedDataId?.temporaryAddress?.houseNo
-      );
-      setValue("nominee.name", clickedDataId?.nominee?.name);
-      setValue("nominee.email", clickedDataId?.nominee?.email);
-      setValue("nominee.contactNumber", clickedDataId?.nominee?.contactNumber);
-      setValue("nominee.citizenship", clickedDataId?.nominee?.citizenship);
-      setValue("nominee.relation", clickedDataId?.nominee?.relation);
-      setValue(
-        "nominee.permanentAddress.stateId",
-        clickedDataId?.nominee?.permanentAddress?.stateId
-      );
-      setValue(
-        "nominee.permanentAddress.districtId",
-        clickedDataId?.nominee?.permanentAddress?.districtId
-      );
-      setValue(
-        "nominee.permanentAddress.palikaId",
-        clickedDataId?.nominee?.permanentAddress?.palikaId
-      );
-      setValue(
-        "nominee.permanentAddress.ward",
-        clickedDataId?.nominee?.permanentAddress?.ward
-      );
-      setValue(
-        "nominee.permanentAddress.tole",
-        clickedDataId?.nominee?.permanentAddress?.tole
-      );
-      setValue(
-        "nominee.permanentAddress.houseNo",
-        clickedDataId?.nominee?.permanentAddress?.houseNo
-      );
-
-      setValue(
-        "nominee.temporaryAddress.stateId",
-        clickedDataId?.nominee?.temporaryAddress?.stateId
-      );
-      setValue(
-        "nominee.temporaryAddress.districtId",
-        clickedDataId?.nominee?.temporaryAddress?.districtId
-      );
-      setValue(
-        "nominee.temporaryAddress.palikaId",
-        clickedDataId?.nominee?.temporaryAddress?.palikaId
-      );
-      setValue(
-        "nominee.temporaryAddress.ward",
-        clickedDataId?.nominee?.temporaryAddress?.ward
-      );
-      setValue(
-        "nominee.temporaryAddress.tole",
-        clickedDataId?.nominee?.temporaryAddress?.tole
-      );
-      setValue(
-        "nominee.temporaryAddress.houseNo",
-        clickedDataId?.nominee?.temporaryAddress?.houseNo
-      );
-      setValue(
-        "nominee.temporaryAddress.houseNo",
-        clickedDataId?.nominee?.temporaryAddress?.houseNo
-      );
-      setValue("shareQuantity", clickedDataId?.shareQuantity);
-      setValue("shareRate", clickedDataId?.shareRate);
-      setValue("totalShareAmount", clickedDataId?.totalShareAmount);
-      setValue("voucherImage", clickedDataId?.voucherImage);
-      setVoucherImagePreview(clickedDataId?.voucherImage);
-    }
-  }, [clickedDataId, setValue]);
 
   return (
     <>
@@ -800,8 +677,7 @@ export default function CreateApplicaton({
                             value={item.districtId}
                             selected={
                               fillData?.temporaryAddress?.districtId ||
-                              0 ||
-                              clickedDataId?.temporaryAddress?.districtId
+                              0 
                             }
                           >
                             {item.districtNameNep}
@@ -829,8 +705,7 @@ export default function CreateApplicaton({
                             value={item.palikaId}
                             selected={
                               fillData?.temporaryAddress?.palikId ||
-                              0 ||
-                              clickedDataId?.temporaryAddress?.palikaId
+                              0 
                             }
                           >
                             {item.palikaNameNep}
@@ -927,8 +802,7 @@ export default function CreateApplicaton({
                             value={item.districtId}
                             selected={
                               fillData?.permanentAddress?.districtId ||
-                              0 ||
-                              clickedDataId?.permanentAddress?.districtId
+                              0 
                             }
                           >
                             {item.districtNameNep}
@@ -956,8 +830,7 @@ export default function CreateApplicaton({
                             value={item.palikaId}
                             selected={
                               fillData?.permanentAddress?.palikaId ||
-                              0 ||
-                              clickedDataId?.permanentAddress?.palikaId
+                              0 
                             }
                           >
                             {item.palikaNameNep}
@@ -1151,9 +1024,7 @@ export default function CreateApplicaton({
                             key={index}
                             value={item.districtId}
                             selected={
-                              fillData?.nominee?.temporaryAddress?.districtId ||
-                              clickedDataId?.nominee?.temporaryAddress
-                                ?.districtId
+                              fillData?.nominee?.temporaryAddress?.districtId 
                             }
                           >
                             {item.districtNameNep}
@@ -1187,8 +1058,7 @@ export default function CreateApplicaton({
                             key={index}
                             value={item.palikaId}
                             selected={
-                              fillData?.nominee?.temporaryAddress?.palikaId ||
-                              clickedDataId?.nominee?.temporaryAddress?.palikaId
+                              fillData?.nominee?.temporaryAddress?.palikaId 
                             }
                           >
                             {item.palikaNameNep}
@@ -1303,9 +1173,7 @@ export default function CreateApplicaton({
                             key={index}
                             value={item.districtId}
                             selected={
-                              fillData?.nominee?.permanentAddress?.districtId ||
-                              clickedDataId?.nominee?.permanentAddress
-                                ?.districtId
+                              fillData?.nominee?.permanentAddress?.districtId
                             }
                           >
                             {item.districtNameNep}
@@ -1335,9 +1203,7 @@ export default function CreateApplicaton({
                         return (
                           <option key={index} value={item.palikaId}
                           selected={
-                            fillData?.nominee?.permanentAddress?.districtId ||
-                            clickedDataId?.nominee?.permanentAddress
-                              ?.districtId
+                            fillData?.nominee?.permanentAddress?.districtId 
                           }
                           >
                             {item.palikaNameNep}
@@ -1497,3 +1363,5 @@ export default function CreateApplicaton({
     </>
   );
 }
+
+export default CreateApplicatonByAdmin

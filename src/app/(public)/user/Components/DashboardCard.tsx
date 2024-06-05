@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
+import CountUp from 'react-countup'
 export default function DashboardCard({
   title,
   data,
@@ -14,7 +15,12 @@ export default function DashboardCard({
       <div className="px-5 py-5 flex justify-between items-center gap-4">
         <div className="">
           <h1 className="text-xl font-bold">{title}</h1>
-          <span className="text-xl font-bold text-gray-600">{data}</span>
+          <span className="text-xl font-bold text-gray-600">
+            <CountUp 
+            start={0}
+            end={data}
+            />
+            </span>
         </div>
             {icon}
       </div>

@@ -123,6 +123,10 @@ export const apiUrls = {
     getDetailsWithNumber:{
       method:"GET",
       url:"/request/getDetailsWithNumber"
+    },
+    deleteRequest:{
+      method:"DELETE",
+      url:"/request/deleteRequest"
     }
   },
   admin:{
