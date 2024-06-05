@@ -162,3 +162,11 @@ export async function GetDetailsWithNumber(certificateNumber:string,contactNumbe
   )
   return response
 }
+
+export async function DeleteRequest(id:string){
+  let response = await mainApi(
+    apiUrls?.request?.deleteRequest?.method,
+    apiUrls?.request?.deleteRequest?.url+`/${id?id:''}`,
+  )
+  return response
+}

@@ -11,6 +11,8 @@ import {
   GetUserTotalShareRequest,
 } from "@/services/apiServices/request/requestServices";
 import { ArrowTrendingUpIcon , MinusCircleIcon , ShieldCheckIcon,HandRaisedIcon} from "@heroicons/react/24/outline";
+import { CircularProgress } from "@mui/material";
+import CountUp from 'react-countup'
 export default function Home() {
   const getShareAmount = async () => {
     const { data } = await GetUserShareAmount();
@@ -106,6 +108,9 @@ export default function Home() {
           />
         );
       })}
+      <div>
+        
+      </div>
     </div>
   );
 }

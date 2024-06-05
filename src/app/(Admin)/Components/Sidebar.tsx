@@ -9,6 +9,8 @@ import {
   DocumentTextIcon,
   FolderOpenIcon
 } from "@heroicons/react/24/solid";
+import logo from '../../../../public/logo_circle.jpeg'
+import Image from "next/image";
 const Sidebar = () => {
 
   const pathname = usePathname();
@@ -71,6 +73,7 @@ const Sidebar = () => {
     },
   ];
   return (
+    <div>
     <div className=" flex flex-col fixed w-[20%]  text-center   bg-white h-screen mt-[88px] border-r border-gray-300">
       {arr.map((item, index) => {
         const isActive = pathname == item.Link;
@@ -94,6 +97,13 @@ const Sidebar = () => {
           </Link>
         );
       })}
+      <div>
+        <Image src={logo} alt="" height={400} width={400} />
+        <h1 className="font-bold text-green-500 text-2xl">Hariyali Share Platform Admin</h1>
+      </div>
+    </div>
+
+   
     </div>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, use } from "react";
 import { useForm, useWatch, useFormContext } from "react-hook-form";
-import FormBorder from "../../Components/FormBorder";
+import FormBorder from "@/app/(public)/Components/FormBorder";
 import { PlusIcon, QrCodeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import {
@@ -19,14 +19,14 @@ import { NepaliDatePicker } from "nepali-datepicker-reactjs";
 import "nepali-datepicker-reactjs/dist/index.css";
 const aa = new BikramSambat(new Date()).toBS();
 import { useRouter } from "next/navigation";
-import Modal from "../../Components/Modal";
-import modelImage from "../../../../../public/qr.jpeg";
+import Modal from "@/app/(public)/Components/Modal";
+import modelImage from "../../../../../../../public/qr.jpeg";
 import { ShareRequest } from "@/types/types";
 
-export default function CreateApplicaton({
+export default function CreateApplicatonEdit({
   clickedDataId,
 }: {
-  clickedDataId?: ShareRequest;
+  clickedDataId: ShareRequest;
 }) {
   const router = useRouter();
   const [showQR, setShowQR] = useState(false);
@@ -272,16 +272,17 @@ export default function CreateApplicaton({
 
   const onSubmit = async (data: any) => {
     const formData = new FormData();
-    console.log(data);
+    console.log(data,'response');
+    formData.set("_id",data._id)
     formData.set("name", data.name);
-    formData.set("personalImage", data?.personalImage[0]);
+    formData.set("personalImage",clickedDataId?.personalImage);
     formData.set("grandFatherName", data.grandFatherName);
     formData.set("children", JSON.stringify(data.children));
     formData.set("fatherName", data.fatherName);
     formData.set("motherName", data.motherName);
     formData.set("spouseName", data.spouseName);
     formData.set("citizenshipNo", data.citizenshipNo);
-    formData.set("citizenshipFrontImage", data?.citizenshipFrontImage[0]);
+    formData.set("citizenshipFrontImage", clickedDataId?.citizenshipFrontImage);
     formData.set("email", data?.email);
     formData?.set("contactNumber", data.contactNumber);
     formData.set("shareRate", data.shareRate);
@@ -291,12 +292,12 @@ export default function CreateApplicaton({
     formData.set("temporaryAddress", JSON.stringify(data.temporaryAddress));
     formData.set("date", aa);
     formData.set("password", data.password);
-    formData.set("voucherImage", data?.voucherImage[0]);
+    formData.set("voucherImage", clickedDataId?.voucherImage);
     formData.set("nominee", JSON.stringify(data?.nominee));
     formData.set("dateofBirth", date);
     const response = await CreateRequest(formData);
     if (response?.status === 200) {
-      router.push("/user");
+      router.push("/admin/newrequest");
     }
   };
 
@@ -465,7 +466,7 @@ export default function CreateApplicaton({
       setVoucherImagePreview(clickedDataId?.voucherImage);
     }
   }, [clickedDataId, setValue]);
-
+console.log(clickedDataId?._id,'response')
   return (
     <>
       {showQR && (
@@ -561,7 +562,7 @@ export default function CreateApplicaton({
                   <p className="text-red-600">{errors?.name?.message}</p>
                 )}
               </div>
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <label htmlFor="" className="labelText">
                   व्यक्तिगत फोटो <span className="text-red-600">*</span>
                 </label>
@@ -589,7 +590,7 @@ export default function CreateApplicaton({
                 ) : (
                   ""
                 )}
-              </div>
+              </div> */}
               <div className="flex flex-col">
                 <label className="labelText">
                   इमेल <span className="text-red-600">*</span>
@@ -725,7 +726,7 @@ export default function CreateApplicaton({
                   />
                 </div>
 
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                   <label htmlFor="" className="labelText">
                     नागरिकता फोटो <span className="text-red-600">*</span>
                   </label>
@@ -753,7 +754,7 @@ export default function CreateApplicaton({
                   ) : (
                     ""
                   )}
-                </div>
+                </div> */}
               </div>
             </FormBorder>
 
@@ -1439,7 +1440,7 @@ export default function CreateApplicaton({
                 />
               </div>
 
-              <div className="relative">
+              {/* <div className="relative">
                 <div className="flex absolute items-center justify-end bottom-2 -right-40">
                   <button
                     className="flex items-center gap-3 bg-green-500 text-white font-semibold px-5 py-2 rounded-md shadow-md"
@@ -1480,7 +1481,7 @@ export default function CreateApplicaton({
                     ""
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
           </FormBorder>
           <div className="flex justify-end mr-10">
