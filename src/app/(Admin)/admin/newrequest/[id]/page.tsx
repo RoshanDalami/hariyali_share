@@ -18,16 +18,16 @@ import Model from "@/app/(Admin)/Components/Model";
 import BikramSambat, { ADToBS, BSToAD } from "bikram-sambat-js";
 const aa = new BikramSambat(new Date()).toBS();
 export default function IndividualRequest() {
-    const [modelOpen,setModelOpen] = useState(false)
-    const [loading,setLoading] = useState(false)
-    const [declineLoading,setDeclineLoading] = useState(false)
+  const [modelOpen, setModelOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [declineLoading, setDeclineLoading] = useState(false);
   const { id }: { id: string } = useParams();
   const router = useRouter();
   const getRequestById = async (id: string) => {
     const { data }: { data: ShareRequest } = await GetRequestById(id);
     return data;
   };
-  const [remarks,setRemarks] = useState('')
+  const [remarks, setRemarks] = useState("");
   const {
     data: IndividualRequest,
     isError,
@@ -49,75 +49,77 @@ export default function IndividualRequest() {
     const data = {
       id: IndividualRequest?._id,
       shareQuantity: IndividualRequest?.shareQuantity,
-      shareApprovedDate:aa
+      shareApprovedDate: aa,
     };
-    setLoading(true)
+    setLoading(true);
     const response = await AcceptRequest(data);
 
     if (response?.status === 200) {
-      setLoading(false)
+      setLoading(false);
       router.push("/admin/approved");
     }
   };
   const handleDecline = async () => {
     const data = {
-        id:id,
-        remarks:remarks
-    }
-    setDeclineLoading(true)
+      id: id,
+      remarks: remarks,
+    };
+    setDeclineLoading(true);
     const response = await DeclineRequest(data);
     if (response?.status === 200) {
-      setDeclineLoading(false)
+      setDeclineLoading(false);
       router.push("/admin/declined");
     }
   };
 
   return (
     <>
-      { modelOpen &&
+      {modelOpen && (
         <Model>
           <div className="bg-white px-3 py-5 rounded-md">
             <div>
-                <label htmlFor="" className="labelText text-red-600">Reason to Decline</label>
-              <input type="text" className="inputStyle w-full" onChange={(e)=>setRemarks(e.target.value)} />
+              <label htmlFor="" className="labelText text-red-600">
+                अस्वीकृत हुनुको कारण
+              </label>
+              <input
+                type="text"
+                className="inputStyle w-full"
+                onChange={(e) => setRemarks(e.target.value)}
+              />
               <div className="my-3 flex justify-end gap-3 items-center">
-              <button
-                className="bg-gray-400 text-white px-6 py-2 rounded-md shadow-md font-bold"
-                onClick={() => setModelOpen(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed"
-                onClick={() => handleDecline()}
-                
-              >
-                {declineLoading ? ' Declining ...':'Decline'}
-              </button>
-
+                <button
+                  className="bg-gray-400 text-white px-6 py-2 rounded-md shadow-md font-bold"
+                  onClick={() => setModelOpen(false)}>
+                  Cancel
+                </button>
+                <button
+                  className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  onClick={() => handleDecline()}>
+                  {declineLoading ? " Declining ..." : "Decline"}
+                </button>
               </div>
             </div>
           </div>
         </Model>
-      }
+      )}
       <div className=" flex flex-col min-w-[80vw]  ">
         <div className="mb-6">
           <FormBorder title="Personal Details">
             <div className=" grid grid-cols-3 px-3 py-6">
               <p className="font-bold capitalize">
-                Name : {IndividualRequest?.name}
+                नाम: {IndividualRequest?.name}
               </p>
               <p className="font-bold capitalize">
-                Grandfather Name: {IndividualRequest?.grandFatherName}
+                हजुरबुवाको नाम : {IndividualRequest?.grandFatherName}
               </p>
               <p className="font-bold capitalize">
-                Father Name : {IndividualRequest?.fatherName}
+                बुवाको नाम : {IndividualRequest?.fatherName}
               </p>
               <p className="font-bold capitalize">
-                Mother Name : {IndividualRequest?.motherName}
+                आमाको नाम : {IndividualRequest?.motherName}
               </p>
               <p className="font-bold capitalize">
-                Spouse Name : {IndividualRequest?.spouseName}
+                पति / पत्नीको नाम: {IndividualRequest?.spouseName}
               </p>
               <p className="font-bold ">Email : {IndividualRequest?.email}</p>
             </div>
@@ -127,44 +129,44 @@ export default function IndividualRequest() {
             <FormBorder title="Pernament Address">
               <div className="px-3 py-5">
                 <h1 className="font-bold capitalize">
-                  State : {IndividualRequest?.pernamentStateName}{" "}
+                  प्रदेश : {IndividualRequest?.pernamentStateName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  District : {IndividualRequest?.pernamentDistrictName}{" "}
+                  जिल्ला : {IndividualRequest?.pernamentDistrictName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Palika : {IndividualRequest?.pernamentPalikaName}{" "}
+                  पालिका : {IndividualRequest?.pernamentPalikaName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Ward : {IndividualRequest?.permanentAddress?.ward}{" "}
+                  वार्ड नं : {IndividualRequest?.permanentAddress?.ward}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Tole : {IndividualRequest?.permanentAddress?.tole}{" "}
+                  टोल : {IndividualRequest?.permanentAddress?.tole}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  House No : {IndividualRequest?.permanentAddress?.houseNo}{" "}
+                  घर नं : {IndividualRequest?.permanentAddress?.houseNo}{" "}
                 </h1>
               </div>
             </FormBorder>
             <FormBorder title="Temp Address">
               <div className="px-3 py-5">
                 <h1 className="font-bold capitalize">
-                  State : {IndividualRequest?.tempStateName}{" "}
+                  प्रदेश : {IndividualRequest?.tempStateName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  District : {IndividualRequest?.tempDistrictName}{" "}
+                  जिल्ला : {IndividualRequest?.tempDistrictName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Palika : {IndividualRequest?.tempPalikaName}{" "}
+                  पालिका : {IndividualRequest?.tempPalikaName}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Ward : {IndividualRequest?.temporaryAddress?.ward}{" "}
+                  वार्ड नं : {IndividualRequest?.temporaryAddress?.ward}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  Tole : {IndividualRequest?.temporaryAddress?.tole}{" "}
+                  टोल : {IndividualRequest?.temporaryAddress?.tole}{" "}
                 </h1>
                 <h1 className="font-bold capitalize">
-                  House No : {IndividualRequest?.temporaryAddress?.houseNo}{" "}
+                  घर नं: {IndividualRequest?.temporaryAddress?.houseNo}{" "}
                 </h1>
               </div>
             </FormBorder>
@@ -173,14 +175,16 @@ export default function IndividualRequest() {
           <FormBorder title="Citizenship Details">
             <div className="px-3 py-4 flex justify-between ">
               <p className="text-lg font-bold">
-                Citizenship No:<span> {IndividualRequest?.citizenshipNo}</span>
+                नागरिताको नम्बर :
+                <span> {IndividualRequest?.citizenshipNo}</span>
               </p>
               <p className="text-lg font-bold">
-                National Identity :<span> {IndividualRequest?.nid}</span>
+                राष्ट्रिय परिचय पत्र नम्बर :
+                <span> {IndividualRequest?.nid}</span>
               </p>
 
               <div>
-                <h1 className="font-bold">Citizenship  Image</h1>
+                <h1 className="font-bold">Citizenship Image</h1>
                 <Image
                   src={IndividualRequest?.citizenshipFrontImage!}
                   alt=""
@@ -189,40 +193,37 @@ export default function IndividualRequest() {
                   className="max-h-68 "
                 />
               </div>
-              
             </div>
           </FormBorder>
           <FormBorder title="Share Details">
             <div className="px-3 py-5 grid grid-cols-4">
               <p className="font-bold">
-                Share Quantity : {IndividualRequest?.shareQuantity}
+                शेयरको कित्ता : {IndividualRequest?.shareQuantity}
               </p>
               <p className="font-bold">
-                Per Share Rate: {IndividualRequest?.shareRate}
+                प्रति कित्ता शेयर:{IndividualRequest?.shareRate}
               </p>
               <p className="font-bold">
-                Total Share Amount:{IndividualRequest?.totalShareAmount}
+                शेयर कुल रकम:{IndividualRequest?.totalShareAmount}
               </p>
               <p className="font-bold">
                 {" "}
-                Share Applied Date : {IndividualRequest?.date}
+                शेयर आबेदन दिएको मिति : {IndividualRequest?.date}
               </p>
             </div>
           </FormBorder>
           <div className="my-3  flex gap-4 justify-end mx-9">
             <button
               className="bg-red-600 text-white px-6 py-2 rounded-md shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed"
-              onClick={()=>setModelOpen(true)}
-              disabled={declineLoading}
-            >
-              {declineLoading ? ' Declining ...':'Decline'}
+              onClick={() => setModelOpen(true)}
+              disabled={declineLoading}>
+              {declineLoading ? " Declining ..." : "Decline"}
             </button>
             <button
               className="bg-green-600 text-white px-6 py-2 rounded-md shadow-md disabled:bg-gray-300 disabled:cursor-not-allowed"
               onClick={() => handleConfirm()}
-              disabled={loading}
-            >
-              {loading ? "Accepting...":'Accept'}
+              disabled={loading}>
+              {loading ? "Accepting..." : "Accept"}
             </button>
           </div>
         </div>
