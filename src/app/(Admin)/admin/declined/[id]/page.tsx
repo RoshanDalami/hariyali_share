@@ -60,23 +60,21 @@ export default function IndividualRequest() {
         <FormBorder title="Personal Details">
           <div className=" grid grid-cols-3 px-3 py-6">
             <p className="font-bold capitalize">
-              Name : {IndividualRequest?.name}
+              नाम: {IndividualRequest?.name}
             </p>
             <p className="font-bold capitalize">
-              Grandfather Name: {IndividualRequest?.grandFatherName}
+              हजुरबुवाको नाम : {IndividualRequest?.grandFatherName}
             </p>
             <p className="font-bold capitalize">
-              Father Name : {IndividualRequest?.fatherName}
+              बुवाको नाम : {IndividualRequest?.fatherName}
             </p>
             <p className="font-bold capitalize">
-              Mother Name : {IndividualRequest?.motherName}
+              आमाको नाम : {IndividualRequest?.motherName}
             </p>
             <p className="font-bold capitalize">
-              Spouse Name : {IndividualRequest?.spouseName}
+              पति / पत्नीको नाम: {IndividualRequest?.spouseName}
             </p>
-            <p className="font-bold ">
-              Email : {IndividualRequest?.email}
-            </p>
+            <p className="font-bold ">इमेल : {IndividualRequest?.email}</p>
           </div>
         </FormBorder>
 
@@ -130,13 +128,13 @@ export default function IndividualRequest() {
         <FormBorder title="Citizenship Details">
           <div className="px-3 py-4 flex justify-between ">
             <p className="text-lg font-bold">
-              Citizenship No:<span> {IndividualRequest?.citizenshipNo}</span>
+              नागरिताको नम्बर :<span> {IndividualRequest?.citizenshipNo}</span>
             </p>
             <p className="text-lg font-bold">
-              National Identity Number :<span> {IndividualRequest?.nid}</span>
+              राष्ट्रिय परिचय पत्र नम्बर :<span> {IndividualRequest?.nid}</span>
             </p>
             <div>
-              <h1 className="font-bold">Citizenship Front Image</h1>
+              <h1 className="font-bold">नागरिताको अगाडी तसबीर </h1>
               <Image
                 src={IndividualRequest?.citizenshipFrontImage!}
                 alt=""
@@ -150,21 +148,21 @@ export default function IndividualRequest() {
         <FormBorder title="Share Details">
           <div className="px-3 py-5 grid grid-cols-4">
             <p className="font-bold">
-              Share Quantity : {IndividualRequest?.shareQuantity}
+              शेयरको कित्ता : {IndividualRequest?.shareQuantity}
             </p>
             <p className="font-bold">
-              Per Share Rate: {IndividualRequest?.shareRate}
+              प्रति कित्ता शेयर: {IndividualRequest?.shareRate}
             </p>
             <p className="font-bold">
-              Total Share Amount:{IndividualRequest?.totalShareAmount}
-            </p>
-            <p className="font-bold">
-              {" "}
-              Share Applied Date : {IndividualRequest?.date}
+              शेयर कुल रकम:{IndividualRequest?.totalShareAmount}
             </p>
             <p className="font-bold">
               {" "}
-              Declined Reason : {IndividualRequest?.remarks}
+              शेयर आबेदन दिएको मिति : {IndividualRequest?.date}
+            </p>
+            <p className="font-bold">
+              {" "}
+              अस्वीकृत हुनुको कारण : {IndividualRequest?.remarks}
             </p>
           </div>
         </FormBorder>
